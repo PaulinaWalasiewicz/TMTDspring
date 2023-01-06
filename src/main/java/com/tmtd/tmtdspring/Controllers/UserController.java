@@ -1,10 +1,10 @@
-package Controllers;
-import Models.User;
+package com.tmtd.tmtdspring.Controllers;
+import com.tmtd.tmtdspring.Models.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import Repository.UserRepository;
+import com.tmtd.tmtdspring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
