@@ -1,2 +1,8 @@
-package com.tmtd.tmtdspring.Models;public class Priority {
+package com.tmtd.tmtdspring.Models;
+
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH
 }
+

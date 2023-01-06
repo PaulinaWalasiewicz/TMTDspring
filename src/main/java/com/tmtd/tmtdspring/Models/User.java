@@ -1,4 +1,4 @@
-package Models;
+package com.tmtd.tmtdspring.Models;
 
 
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     private Long id;
 
     @Column(name="username",nullable = false)
