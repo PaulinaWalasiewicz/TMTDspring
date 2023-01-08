@@ -40,7 +40,13 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    public Task(String title, Description description, LocalDate dueDate, boolean completed, User user, Category category, Priority priority) {
+    public Task(String title,
+                Description description,
+                LocalDate dueDate,
+                boolean completed,
+                User user,
+                Category category,
+                Priority priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -60,7 +66,7 @@ public class Task {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
