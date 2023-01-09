@@ -23,16 +23,22 @@ public class Drink {
 
     @Column(name = "limit")
     private float limit;
-    @Enumerated(EnumType.STRING)
-    private DrinkType drinkType;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @JoinColumn(name="type",nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private DrinkType type;
+    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @JoinColumn(name="liquid_unit")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private LiquidUnit unit;
 
     public Drink(User user, int count, float limit, DrinkType drinkType, LiquidUnit unit) {
         this.user = user;
         this.count = count;
         this.limit = limit;
-        this.drinkType = drinkType;
+        this.type = drinkType;
         this.unit = unit;
     }
 
@@ -73,11 +79,11 @@ public class Drink {
     }
 
     public DrinkType getDrinkType() {
-        return drinkType;
+        return type;
     }
 
     public void setDrinkType(DrinkType drinkType) {
-        this.drinkType = drinkType;
+        this.type = drinkType;
     }
 
     public LiquidUnit getUnit() {
