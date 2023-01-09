@@ -35,9 +35,15 @@ public class Task {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    @JoinColumn(name = "category_id")
     private Category category;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    @JoinColumn(name = "priority_id")
     private Priority priority;
 
     public Task(String title, Description description, LocalDate dueDate, boolean completed, User user, Category category, Priority priority) {
