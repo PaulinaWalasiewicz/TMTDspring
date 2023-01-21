@@ -27,7 +27,7 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllTutorial(@RequestParam(required = false) String email){
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String email){
         try{
             List<User> users = new ArrayList<User>();
 
@@ -43,7 +43,7 @@ public class UserController {
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/create/{id}")
     public ResponseEntity<User> createUser(@PathVariable("id") long id){
         Optional<User> usersData = userRepository.findById(id);
         if(usersData.isPresent()){
@@ -53,7 +53,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user/create")
     public ResponseEntity<User> createUser(@RequestBody User user){
         try{
             User _user = userRepository
@@ -64,7 +64,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         Optional<User> userData = userRepository.findById(id);
 
@@ -80,7 +80,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
         try {
             userRepository.deleteById(id);
@@ -90,7 +90,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping("/users/delete")
     public ResponseEntity<HttpStatus> deleteAllUsers() {
         try {
             userRepository.deleteAll();
