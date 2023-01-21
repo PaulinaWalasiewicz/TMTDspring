@@ -30,4 +30,20 @@ public class Description {
     public void setcontent(String content) {
         this.content = content;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Description{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

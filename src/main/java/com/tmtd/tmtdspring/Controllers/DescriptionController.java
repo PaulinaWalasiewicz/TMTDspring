@@ -33,6 +33,7 @@ public class DescriptionController {
             if(descriptions.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            descriptionRepository.findAll().forEach(descriptions::add);
             return new ResponseEntity<>(descriptions,HttpStatus.OK);
 
         }catch (Exception e){
