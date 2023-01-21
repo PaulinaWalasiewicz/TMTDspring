@@ -1,5 +1,6 @@
 package com.tmtd.tmtdspring.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +26,7 @@ public class Task {
     private Description description;
 
     @Column(name="due_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dueDate;
 
     @Column(name="completed")

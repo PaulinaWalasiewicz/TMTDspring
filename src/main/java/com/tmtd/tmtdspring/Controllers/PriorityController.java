@@ -30,10 +30,11 @@ public class PriorityController {
     public ResponseEntity<List<Priority>> getAllPriorities(){
         try{
             List<Priority> priorities = new ArrayList<Priority>();
+            priorityRepository.findAll().forEach(priorities::add);
             if(priorities.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            priorityRepository.findAll().forEach(priorities::add);
+
             return new ResponseEntity<>(priorities,HttpStatus.OK);
 
         }catch (Exception e){
