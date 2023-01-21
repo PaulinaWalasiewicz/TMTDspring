@@ -1,5 +1,6 @@
 package com.tmtd.tmtdspring.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -23,9 +24,11 @@ public class Event {
     private String title;
 
     @Column(name="start_time",nullable = false)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
 
     @Column(name="end_time",nullable = false)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
@@ -94,6 +97,18 @@ public class Event {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", user=" + user.getId() +
+                ", title='" + title + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", description=" + description.getId() +
+                '}';
     }
 }
 
