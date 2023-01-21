@@ -72,7 +72,7 @@ public class PriorityController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/priority/delete/{id}")
     public ResponseEntity<HttpStatus> deletePriority(@PathVariable("id") long id) {
         try {
             priorityRepository.deleteById(id);
