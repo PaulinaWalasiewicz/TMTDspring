@@ -33,6 +33,7 @@ public class PriorityController {
             if(priorities.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            priorityRepository.findAll().forEach(priorities::add);
             return new ResponseEntity<>(priorities,HttpStatus.OK);
 
         }catch (Exception e){

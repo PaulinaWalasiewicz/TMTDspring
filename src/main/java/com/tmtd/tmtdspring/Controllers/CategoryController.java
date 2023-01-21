@@ -33,6 +33,7 @@ public class CategoryController {
             if(categories.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            categoryRepository.findAll().forEach(categories::add);
             return new ResponseEntity<>(categories,HttpStatus.OK);
 
         }catch (Exception e){
