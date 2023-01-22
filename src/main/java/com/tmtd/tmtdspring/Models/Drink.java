@@ -23,7 +23,13 @@ public class Drink {
 
     @Column(name = "limit")
     private float limit;
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+
+    @Column(name = "drink_type")
+    private String drink_type;
+
+    @Column(name = "unit")
+    private String unitt;
+    @ManyToOne(fetch=FetchType.EAGER,optional = false)
     @JoinColumn(name="type",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
@@ -40,6 +46,8 @@ public class Drink {
         this.limit = limit;
         this.type = drinkType;
         this.unit = unit;
+        this.drink_type = drinkType.getType();
+        this.unitt = unit.getUnit();
     }
 
     public Drink() {
@@ -82,8 +90,8 @@ public class Drink {
         return type;
     }
 
-    public void setDrinkType(DrinkType drinkType) {
-        this.type = drinkType;
+    public void setDrinkType(DrinkType type) {
+        this.type = type;
     }
 
     public LiquidUnit getUnit() {
@@ -92,5 +100,17 @@ public class Drink {
 
     public void setUnit(LiquidUnit unit) {
         this.unit = unit;
+    }
+
+    @Override
+    public String toString() {
+        return "Drink{" +
+                "id=" + id +
+                ", user=" + user +
+                ", count=" + count +
+                ", limit=" + limit +
+                ", type=" + type +
+                ", unit=" + unit +
+                '}';
     }
 }
