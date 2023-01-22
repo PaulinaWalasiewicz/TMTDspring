@@ -30,6 +30,7 @@ public class DrinkTypeController {
     public ResponseEntity<List<DrinkType>> getAllDrinkTypes(){
         try{
             List<DrinkType> drinkTypes = new ArrayList<DrinkType>();
+            drinkTypeRepository.findAll().forEach(drinkTypes::add);
             if(drinkTypes.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

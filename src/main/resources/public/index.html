@@ -18,7 +18,10 @@
         </ul>
         <div id="header">
             <div id="monthDisplay"></div>
-            <p><button id="addButton">Add Event</button></p>
+            <p>
+                <button id="addButton">Add Event</button>
+                <button id="addDrinkButton">Add Drink</button>
+            </p>
             <div>
                 <button id="backButton">Back</button>
                 <button id="nextButton">Next</button>
@@ -69,6 +72,22 @@
             <select class="dropbtn" id="editEventDescription">Description</select>
         </div>
         <button id="saveEditButton">Save Edit</button>
+        <button id="cancelButton">Cancel</button>
+    </div>
+
+    <div id="newDrinkModal" class="modal">
+        <h2>Add Drink</h2>
+
+        <div id="list">
+            <select class="dropbtn" id="drinkType">Drink Type</select>
+        </div>
+        <div id="list">
+            <input id="countInput" placeholder="Drinks Count" />
+            <select class="dropbtn2" id="unit">Unit</select>
+        </div>
+        <input id="limitInput" placeholder="Drink Limit" />
+
+        <button id="saveDrinkButton">Save</button>
         <button id="cancelButton">Cancel</button>
     </div>
 

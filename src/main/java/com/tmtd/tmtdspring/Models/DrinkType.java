@@ -18,8 +18,8 @@ public class DrinkType {
 //    ENERGY_DRINK,
 
 
-    public DrinkType(String content) {
-        this.type = content;
+    public DrinkType(String type) {
+        this.type = type;
     }
 
     public DrinkType() {
@@ -38,7 +38,7 @@ public class DrinkType {
         return type;
     }
 
-    public void setType(String content) {
-        this.type = content;
+    public void setType(String type) {
+        this.type = type;
     }
 }
