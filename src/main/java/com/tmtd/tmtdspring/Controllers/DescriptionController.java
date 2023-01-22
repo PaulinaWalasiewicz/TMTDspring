@@ -26,6 +26,7 @@ public class DescriptionController {
     @Autowired
     DescriptionRepository descriptionRepository;
 
+
     @GetMapping("/descriptions")
     public ResponseEntity<List<Description>> getAllDescription(){
         try{

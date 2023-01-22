@@ -114,7 +114,7 @@ function load(){
 
     }
     for(let i = 1; i <= 24; i++) {
-        for(let j=1;j<weekdays.length;j++){
+        for(let j=1;j<weekdays.length+1;j++){
 
             const hourSquare = document.createElement('div');
             hourSquare.classList.add('day');
