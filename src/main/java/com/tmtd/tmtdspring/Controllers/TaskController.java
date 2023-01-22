@@ -1,5 +1,6 @@
 package com.tmtd.tmtdspring.Controllers;
 
+import com.tmtd.tmtdspring.Models.Event;
 import com.tmtd.tmtdspring.Models.Task;
 import com.tmtd.tmtdspring.Repository.TaskRepository;
 import com.tmtd.tmtdspring.Repository.CategoryRepository;
@@ -83,6 +84,16 @@ public class TaskController {
     }
 
     @DeleteMapping("/users/tasks")
+    public ResponseEntity<List<Task>> deleteAllTasks(@PathVariable(value = "user_id") Long user_id) {
+        if (userRepository.existsById(user_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            taskRepository.deleteByUserId(user_id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @DeleteMapping("/users/{user_id}/tasks")
     public ResponseEntity<List<Task>> deleteAllTasksOfUser(@PathVariable(value = "user_id") Long user_id) {
         if (userRepository.existsById(user_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -14,7 +14,7 @@ function getTasks(idUser) {
         })
         .then(data => {
             tasks = data;
-            console.log(tasks)
+            console.log(tasks[0].id)
             if(tasks && tasks.length > 0){
                 console.log("Załadowano taski do tablicy");
             }
@@ -67,6 +67,69 @@ function postTask(idUser,_title ) {
         })
         .then(data => {
             console.log("Succes")
+        })
+        .catch(error => {
+            console.log(error)
+        });
+}
+// function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
+// function putTask(taskId, _title) {
+//     const putTask = {
+//         title: _title,
+//         description: {
+//             content: "descriptionContent"
+//         },
+//         startTime: "2016-03-04 11:08",
+//         completed: false,
+//         user: {
+//             username: "admin",
+//             password: "admin",
+//             email: "dfghj",
+//             firstName: "dfgh",
+//             lastName: "sdfghj"
+//         },
+//         category: {
+//             content: "categoryContent"
+//         },
+//         priority: {
+//             content: "priorityContent"
+//         }
+//     };
+//
+//     fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(newTask)
+//     })
+//         .then(res => {
+//             if(!res.ok){
+//                 console.log("problem");
+//                 return;
+//             }
+//             return res.json();
+//         })
+//         .then(data => {
+//             console.log("Succes")
+//         })
+//         .catch(error => {
+//             console.log(error)
+//         });
+// }
+function deleteTasks(idUser) {
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks`, {
+        method: 'DELETE',
+    })
+        .then(res => {
+            if(!res.ok){
+                console.log("problem");
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("Succes delete")
         })
         .catch(error => {
             console.log(error)
