@@ -65,7 +65,10 @@ public class EventController {
         Optional<Event> event = eventRepository.findById(id);
 
         if (event.isPresent()) {
-            //event.get().setContent(eventRequest.getContent());
+            event.get().setTitle(eventRequest.getTitle());
+            event.get().setStartTime(eventRequest.getStartTime());
+            event.get().setEndTime(eventRequest.getEndTime());
+            //event.get().setDescription(eventRequest.getDescription());
             return new ResponseEntity<>(eventRepository.save(event.get()),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -79,8 +82,8 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //@DeleteMapping("/users/{user_id}/events")
-    @DeleteMapping("/users/events")
+    @DeleteMapping("/users/{user_id}/events")
+
     public ResponseEntity<List<Event>> deleteAllEventsOfUser(@PathVariable(value = "user_id") Long user_id) {
         if (userRepository.existsById(user_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

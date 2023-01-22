@@ -26,14 +26,15 @@ public class DescriptionController {
     @Autowired
     DescriptionRepository descriptionRepository;
 
+
     @GetMapping("/descriptions")
     public ResponseEntity<List<Description>> getAllDescription(){
         try{
             List<Description> descriptions = new ArrayList<Description>();
+            descriptionRepository.findAll().forEach(descriptions::add);
             if(descriptions.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            descriptionRepository.findAll().forEach(descriptions::add);
             return new ResponseEntity<>(descriptions,HttpStatus.OK);
 
         }catch (Exception e){
