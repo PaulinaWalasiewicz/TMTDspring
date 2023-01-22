@@ -44,4 +44,5 @@ public class Category {
     public void setContent(String content) {
         this.content = content;
     }
+
 }
