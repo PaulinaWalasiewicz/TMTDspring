@@ -4,26 +4,16 @@
     <meta charset="UTF-8">
     <title>ToDo</title>
 </head>
-<body onload="getTasks()">
-<div id="tasks-section">
-    <h1>to do</h1>
-    <div id="tasks-items-container"></div>
-<!--        <script>-->
-<!--            fetch("http://localhost:8080/api/users/404/tasks")-->
-<!--                .then(response => response.json())-->
-<!--                .then(data => {-->
-<!--                    var tasks = data;-->
-<!--                    console.log(tasks[0])-->
-<!--                    document.querySelector("#tasks-items-container").innerHTML = tasks[1]["title"];-->
-<!--                })-->
+<body>
+<header>
+    <h1>TMTD Todo List</h1>
+</header>
 
-<!--            }-->
+    <input type="text">
+    <ul></ul>
 
-<!--        </script>-->
-</div>
 
-<h1>To-Do List</h1>
-<ul id="taskList"></ul>
+
 <script src="todoScript.js"></script>
 </body>
 </html>
