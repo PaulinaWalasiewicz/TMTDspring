@@ -27,9 +27,37 @@ function getTasks(idUser) {
         });
 }
 getTasks(idUser)
+// function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
+function postTask(idUser,_title ) {
+    const newTask = {
+        title: _title,
+        description: {
+            content: "descriptionContent"
+        },
+        startTime: "2016-03-04 11:08",
+        completed: false,
+        user: {
+            username: "admin",
+            password: "admin",
+            email: "dfghj",
+            firstName: "dfgh",
+            lastName: "sdfghj"
+        },
+        category: {
+            content: "categoryContent"
+        },
+        priority: {
+            content: "priorityContent"
+        }
+    };
 
-function postTask(idUser) {
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks`)
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&priority_id=2002&category_id=2052`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTask)
+    })
         .then(res => {
             if(!res.ok){
                 console.log("problem");
@@ -38,17 +66,10 @@ function postTask(idUser) {
             return res.json();
         })
         .then(data => {
-            tasks = data;
-            console.log(tasks)
-            if(tasks && tasks.length > 0){
-                console.log("Załadowano taski do tablicy");
-            }
-            else{
-                console.log("No Tasks found");
-            }
+            console.log("Succes")
         })
         .catch(error => {
-            console.log("error")
+            console.log(error)
         });
 }
 
@@ -75,37 +96,6 @@ function todoMain() {
         let liElem = document.createElement("li");
         liElem.innerText = inputValue;
         ulElem.appendChild(liElem);
-
-        const newTask = {
-            title: inputValue,
-            description: {
-                content: "descriptionContent"
-            },
-            startTime: "2016-03-04 11:08",
-            completed: false,
-            user: {
-                username: "admin",
-                password: "admin",
-                email: "dfghj",
-                firstName: "dfgh",
-                lastName: "sdfghj"
-            },
-            category: {
-                content: "categoryContent"
-            },
-            priority: {
-                content: "priorityContent"
-            }
-        };
-
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(newTask),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        fetch('http://localhost:8080/api/users/404/tasks', options)
-        console.log(newTask.value);
+        postTask(idUser, inputValue);
     }
 }
