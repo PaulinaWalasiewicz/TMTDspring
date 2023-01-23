@@ -70,8 +70,8 @@ function fetchDrinks(type_id, unit_id) {
             localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
             console.log(drinkType.type);
             let date = new Date();
-            console.log(date.getWeek()+nav+1)
-            load(date.getWeek()+nav+1)
+            console.log(date.getWeek()-nav)
+            load(date.getWeek()-nav)
         });
 
 }
