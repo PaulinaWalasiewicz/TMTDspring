@@ -21,7 +21,6 @@ function getTasks(idUser) {
                     createTask(task);
                 })
                 countTasks();
-                createDeleteModal()
             }
             else{
                 console.log("No Tasks found");
@@ -78,50 +77,51 @@ function postTask(idUser,_title ) {
         });
 }
 // function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
-// function putTask(taskId, _title) {
-//     const putTask = {
-//         title: _title,
-//         description: {
-//             content: "descriptionContent"
-//         },
-//         startTime: "2016-03-04 11:08",
-//         completed: false,
-//         user: {
-//             username: "admin",
-//             password: "admin",
-//             email: "dfghj",
-//             firstName: "dfgh",
-//             lastName: "sdfghj"
-//         },
-//         category: {
-//             content: "categoryContent"
-//         },
-//         priority: {
-//             content: "priorityContent"
-//         }
-//     };
-//
-//     fetch(`http://localhost:8080/api/tasks/${taskId}`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(newTask)
-//     })
-//         .then(res => {
-//             if(!res.ok){
-//                 console.log("problem");
-//                 return;
-//             }
-//             return res.json();
-//         })
-//         .then(data => {
-//             console.log("Succes")
-//         })
-//         .catch(error => {
-//             console.log(error)
-//         });
-// }
+function putTask(taskId, _title, _completed) {
+    const putTask = {
+        title: _title,
+        description: {
+            content: "descriptionContent"
+        },
+        dueDate: "2016-03-04 11:08",
+        completed: _completed,
+        user: {
+            username: "admin",
+            password: "admin",
+            email: "dfghj",
+            firstName: "dfgh",
+            lastName: "sdfghj"
+        },
+        category: {
+            content: "categoryContent"
+        },
+        priority: {
+            content: "priorityContent"
+        }
+    };
+
+    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&priority_id=2002&category_id=2052`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putTask)
+    })
+        .then(res => {
+            if(!res.ok){
+                console.log("problem");
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("Succes")
+            countTasks();
+        })
+        .catch(error => {
+            console.log(error)
+        });
+}
 
 function deleteTasks(idUser) {
     fetch(`http://localhost:8080/api/users/${idUser}/tasks`, {
@@ -201,7 +201,7 @@ todoForm.addEventListener('submit', (e)=>{
     };
     console.log(newTask)
     postTask(idUser, inputValue);
-    getTasks(idUser);
+    // getTasks(idUser);
     createTask(newTask);
     todoForm.reset();
     mainInput.focus();
@@ -212,6 +212,14 @@ todoList.addEventListener("click", (e) => {
         const taskId = e.target.closest('li').id;
         console.log("Clic "+ taskId)
         removeTask(taskId);
+    }
+})
+
+todoList.addEventListener('keydown', (e) => {
+    if(e.keyCode ==13){
+        e.preventDefault();
+
+        e.target.blur()
     }
 })
 
@@ -243,9 +251,10 @@ function createTask(task){
 
 function countTasks(){
     const completedTasksArray = tasks.filter((task) =>{
-        task.completed === true
+        task.completed === "true"
+        console.log(task.completed);
     })
-
+    console.log("liczy taski")
     totalTask.textContent = tasks.length
     completedTask.textContent = completedTasksArray.length
     remainingTask.textContent = tasks.length - completedTasksArray.length
@@ -263,5 +272,25 @@ function removeTask(taskId){
 
 function updateTask(taskId, el){
     const task = tasks.find((task) => task.id == parseInt(taskId))
-    if()
+
+    if(el.hasAttribute('contenteditable')){
+        task.title = el.textContent;
+    } else {
+        const span = el.nextElementSibling;
+        const parent = el.closest('li');
+
+        task.completed = !task.completed;
+
+        if(task.completed) {
+            span.removeAttribute('contenteditable')
+            parent.classList.add('complete')
+        } else {
+            span.setAttribute('contenteditable', 'true')
+            parent.classList.remove('complete')
+        }
+        console.log("spanV: "+ task.title);
+        console.log("completed: "+ task.completed)
+        putTask(taskId, task.title, task.completed)
+        countTasks();
+    }
 }

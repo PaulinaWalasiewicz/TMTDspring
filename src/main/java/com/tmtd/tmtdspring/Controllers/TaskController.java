@@ -71,6 +71,9 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(id);
 
         if (task.isPresent()) {
+            task.get().setTitle(taskRequest.getTitle());
+            task.get().setDueDate(taskRequest.getDueDate());
+            task.get().setCompleted(taskRequest.isCompleted());
             return new ResponseEntity<>(taskRepository.save(task.get()),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
