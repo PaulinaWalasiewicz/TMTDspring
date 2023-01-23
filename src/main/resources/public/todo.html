@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/todoStyle.css" />
-    <title>Fetching and posting to rest apis</title>
+    <meta charset="UTF-8">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="todoStyle.css">
 </head>
 <body>
-<div class="main--container">
-    <div class="card">
-        <h2>Todo list</h2>
-        <div class="card-body">
-            <form id="form" action="todoScript.js">
-                <div class="input-group">
-                    <div class="">
-                        <input
-                                type="text"
-                                class="input-control"
-                                id="todo"
-                                placeholder="Add todo"
-                                aria-describedby="emailHelp"
-                        />
-                    </div>
-                    <button id="btn-submit" type="submit">Submit</button>
-                </div>
-
-                <ul class="todos__container" id="todo__container">
-                </ul>
-            </form>
-        </div>
+    <header id="main-header">
+    <div id="container">
+        <ul>
+            <!--        <li><img id="logo" src="/logo.png" alt="LOGO"></li>-->
+            <li><a href="index.html">Month</a></li>
+            <li><a href="week.html">Week</a></li>
+            <li><a href="todo.html">ToDo</a></li>
+        </ul>
     </div>
-</div>
-<script src="todoScript.js"></script>
+        <h1>TMTD Todo List</h1>
+
+    <form action="" id="todo-form">
+        <input id="task-name" type="text" name="task-name" placeholder="enter your task.." autofocus>
+        <button type="submit">Add task</button>
+    </form>
+    </header>
+        <selection>
+            <div class="container" id="main-content">
+                <ul class="stats">
+                    <li>
+                        <span>Remaining</span>
+                        <span id="remaining-task">0</span>
+                    </li>
+                    <li>
+                        <span>Completed</span>
+                        <span id="completed-task">0</span>
+                    </li>
+                    <li>
+                        <span>Total</span>
+                        <span id="total-task">0</span>
+                    </li>
+                </ul>
+                <ul class="todos">
+                </ul>
+            </div>
+        </selection>
+
+    <script src="todoScript.js"></script>
 </body>
 </html>

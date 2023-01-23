@@ -45,4 +45,11 @@ public class Category {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

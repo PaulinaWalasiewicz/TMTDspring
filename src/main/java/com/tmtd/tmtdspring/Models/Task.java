@@ -1,11 +1,12 @@
 package com.tmtd.tmtdspring.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="TASK")
@@ -25,7 +26,8 @@ public class Task {
     private Description description;
 
     @Column(name="due_date")
-    private LocalDate dueDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime dueDate;
 
     @Column(name="completed")
     private boolean completed;
@@ -48,7 +50,7 @@ public class Task {
 
     public Task(String title,
                 Description description,
-                LocalDate dueDate,
+                LocalDateTime dueDate,
                 boolean completed,
                 User user,
                 Category category,
@@ -92,11 +94,11 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
