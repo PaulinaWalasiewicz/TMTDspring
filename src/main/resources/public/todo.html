@@ -3,17 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>ToDo</title>
+    <link rel="stylesheet" href="todoStyle.css">
 </head>
 <body>
-<header>
-    <h1>TMTD Todo List</h1>
-</header>
+    <header id="main-header">
+    <div id="container">
+        <ul>
+            <!--        <li><img id="logo" src="/logo.png" alt="LOGO"></li>-->
+            <li><a href="index.html">Month</a></li>
+            <li><a href="week.html">Week</a></li>
+            <li><a href="todo.html">ToDo</a></li>
+        </ul>
+    </div>
+        <h1>TMTD Todo List</h1>
 
-    <input type="text">
-    <ul></ul>
+    <form action="" id="todo-form">
+        <input id="task-name" type="text" name="task-name" placeholder="enter your task.." autofocus>
+        <button type="submit">Add task</button>
+    </form>
+    </header>
+        <selection>
+            <div class="container" id="main-content">
+                <ul class="stats">
+                    <li>
+                        <span>Remaining</span>
+                        <span id="remaining-task">0</span>
+                    </li>
+                    <li>
+                        <span>Completed</span>
+                        <span id="completed-task">0</span>
+                    </li>
+                    <li>
+                        <span>Total</span>
+                        <span id="total-task">0</span>
+                    </li>
+                </ul>
+                <ul class="todos">
+                </ul>
+            </div>
+        </selection>
 
-
-
-<script src="todoScript.js"></script>
+    <script src="todoScript.js"></script>
 </body>
 </html>

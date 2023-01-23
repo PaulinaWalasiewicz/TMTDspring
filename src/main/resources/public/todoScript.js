@@ -1,7 +1,7 @@
 let tasks = [];
 let users = [];
 let items = [];
-let idUser = '404';
+var idUser = '404';
 
 function getTasks(idUser) {
     fetch(`http://localhost:8080/api/users/${idUser}/tasks`)
@@ -14,9 +14,14 @@ function getTasks(idUser) {
         })
         .then(data => {
             tasks = data;
-            console.log(tasks[0].id)
+            console.log(tasks.length)
             if(tasks && tasks.length > 0){
                 console.log("Załadowano taski do tablicy");
+                tasks.map((task) => {
+                    createTask(task);
+                })
+                countTasks();
+                createDeleteModal()
             }
             else{
                 console.log("No Tasks found");
@@ -26,7 +31,7 @@ function getTasks(idUser) {
             console.log("error")
         });
 }
-getTasks(idUser)
+getTasks(idUser);
 // function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
 function postTask(idUser,_title ) {
     const newTask = {
@@ -117,9 +122,10 @@ function postTask(idUser,_title ) {
 //             console.log(error)
 //         });
 // }
+
 function deleteTasks(idUser) {
     fetch(`http://localhost:8080/api/users/${idUser}/tasks`, {
-        method: 'DELETE',
+        method: 'DELETE'
     })
         .then(res => {
             if(!res.ok){
@@ -136,29 +142,126 @@ function deleteTasks(idUser) {
         });
 }
 
-todoMain();
-function todoMain() {
-    let inputElem
-    let ulElem
-    getElements();
-    addListeners();
+function deleteTask(idTask) {
+    fetch(`http://localhost:8080/api/tasks/${idTask}`, {
+        method: 'DELETE'
+    })
+        .then(res => {
+            if(!res.ok){
+                console.log("problem");
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("Succes delete")
+        })
+        .catch(error => {
+            console.log(error)
+        });
+}
 
-    function getElements(){
-        inputElem = document.getElementsByTagName('input')[0];
-        ulElem = document.getElementsByTagName('ul')[0];
+const todoForm = document.querySelector('#todo-form');
+const todoList = document.querySelector('.todos');
+const totalTask = document.querySelector('#total-task');
+const completedTask = document.querySelector('#completed-task');
+const remainingTask = document.querySelector('#remaining-task');
+const mainInput = document.querySelector('#task-name');
+const deleteAllBtn = document.querySelector('#delete-todo');
+
+
+todoForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    const inputValue = mainInput.value;
+
+    if(inputValue == " "){
+        return
+    }
+    const newTask = {
+        title: inputValue,
+        // description: {
+        //     content: "descriptionContent"
+        // },
+        dueDate: "2016-03-04 11:08",
+        completed: false,
+        // user: {
+        //     username: "admin",
+        //     password: "admin",
+        //     email: "dfghj",
+        //     firstName: "dfgh",
+        //     lastName: "sdfghj"
+        // },
+        // category: {
+        //     content: "categoryContent"
+        // },
+        // priority: {
+        //     content: "priorityContent"
+        // }
+    };
+    console.log(newTask)
+    postTask(idUser, inputValue);
+    getTasks(idUser);
+    createTask(newTask);
+    todoForm.reset();
+    mainInput.focus();
+    })
+
+todoList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("remove-task")) {
+        const taskId = e.target.closest('li').id;
+        console.log("Clic "+ taskId)
+        removeTask(taskId);
+    }
+})
+
+todoList.addEventListener("input", (e) => {
+    const taskId = e.target.closest('li').id;
+    updateTask(taskId, e.target)
+})
+
+function createTask(task){
+    const taskEl = document.createElement('li');
+
+    taskEl.setAttribute('id', task.id)
+
+    if( task.completed){
+        taskEl.classList.add('complete');
     }
 
-    function addListeners(){
-        inputElem.addEventListener("change", onChange, false);
-    }
+    const taskElMarkup =
+    `<div>
+        <input type="checkbox" name="tasks" id="${task.id}" ${task.completed ? 'checked' : ''} >
+        <span ${!task.completed ? 'contenteditable' : ''} > ${task.title}</span>
+    </div>
+    <button title="remove the '${task.title}' task" class="remove-task" > remove </button> `
 
-    function onChange(event){
-        let inputValue = inputElem.value;
-        inputElem.value = "";
-        console.log(inputValue);
-        let liElem = document.createElement("li");
-        liElem.innerText = inputValue;
-        ulElem.appendChild(liElem);
-        postTask(idUser, inputValue);
-    }
+    taskEl.innerHTML = taskElMarkup;
+
+    todoList.appendChild(taskEl)
+}
+
+function countTasks(){
+    const completedTasksArray = tasks.filter((task) =>{
+        task.completed === true
+    })
+
+    totalTask.textContent = tasks.length
+    completedTask.textContent = completedTasksArray.length
+    remainingTask.textContent = tasks.length - completedTasksArray.length
+}
+
+function removeTask(taskId){
+    tasks = tasks.filter((task) =>
+        task.id !== parseInt(taskId)
+    )
+    deleteTask(taskId);
+    console.log("cliccck: "+ taskId);
+    document.getElementById(taskId).remove();
+    countTasks();
+}
+
+function updateTask(taskId, el){
+    const task = tasks.find((task) => task.id == parseInt(taskId))
+    if()
 }
