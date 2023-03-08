@@ -228,13 +228,7 @@ function load(week){
                 if ( i === hour && nav === 0) {
                     hourSquare.id = 'currentDay';
                 }
-                if (hourSquare.id === 'currentDay') {
-                    if (localStorage.getItem("current_day") !== hourSquare.innerText) {
-                        //delete all drinks of user
-                        deleteDrinks();
-                        localStorage.setItem("current_day", hourSquare.innerText);
-                    }
-                }
+
                 const eventsForDay = events.filter(e => {
                     const date = new Date(e.startTime);
                     return (date.getMonth()+1)+"/"+(date.getHours()-1)+"/"+date.getFullYear() === dayString;

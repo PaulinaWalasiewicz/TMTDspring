@@ -43,10 +43,9 @@ public class Drink {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private DrinkType type;
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    @JoinColumn(name="liquid_unit")
+    @ManyToOne(fetch=FetchType.EAGER,optional = false)
+    @JoinColumn(name="liquid_unit",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private LiquidUnit unit;
 
     public Drink(User user, int count, float limit, DrinkType drinkType, LiquidUnit unit,LocalDate drink_date) {
