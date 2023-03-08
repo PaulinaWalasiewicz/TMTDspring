@@ -20,12 +20,70 @@ const drinkTypeInput = document.getElementById('drinkType');
 const drinkUnitInput = document.getElementById('unit');
 const drinkCountInput = document.getElementById('countInput');
 const drinkLimitInput = document.getElementById('limitInput');
+//const drinkDate = document.getElementById('drinkDate');
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 let events = [];
 let items = [];
 let drinkTypes = [];
 let drinkUnits = [];
 let drinks = [];
+let drinks2 = [];
+let allDrinks = [
+    {
+        type: 'water',
+        unit: 'ml',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'coffee',
+        unit: 'ml',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'energy drink',
+        unit: 'ml',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'water',
+        unit: 'l',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'coffee',
+        unit: 'l',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'energy drink',
+        unit: 'l',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'water',
+        unit: 'oz',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'coffee',
+        unit: 'oz',
+        count: 0,
+        limit: 0
+    },
+    {
+        type: 'energy drink',
+        unit: 'oz',
+        count: 0,
+        limit: 0
+    }];
+let today;
 
 flatpickr("input[type=datetime-local]", {enableTime: true,
                                          dateFormat: "Y-m-d H:i",});
@@ -37,7 +95,7 @@ function fetchEvents() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             events = data;
-            load();
+            fetchDrinkTypes()
         });
 
 }
@@ -54,24 +112,71 @@ function fetchDescription() {
 
 }
 
-function fetchDrinks(type_id, unit_id) {
-    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
+function fetchDrinks(type_id, unit_id, date) {
+    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id+'&drink_date='+date)
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
             let drinkType = drinkTypes.find(t => t.id == type_id)
             let drinkUnit = drinkUnits.find(u => u.id == unit_id);
             let newValue = 0;
+            let newLimit = 0;
             for (const val of drinks) {
-                //val.count
+                val.type = drinkType.type
+                val.unit = drinkUnit.unit
                 newValue += val.count;
+                newLimit = val.limit;
             }
-            localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
+
+            for (const val of allDrinks) {
+                let newValue = 0;
+                if (val.type == drinkType && val.unit == drinkUnit) {
+                   val.count = newValue
+                    val.limit = newLimit
+                }
+            }
+            //localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
             console.log(drinkType.type);
+            load();
+        });
+
+}
+
+function fetchAllDrinks() {
+    fetch('http://localhost:8080/api/users/404/drinks')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinks2 = data;
+            console.log(data)
+            for (const type of drinkTypes) {
+                let newValue = 0;
+                for (const unit of drinkUnits) {
+                    let newValue = 0;
+                    let newLimit = 0;
+                    for (const val of drinks2) {
+                        console.log(val.unit.unit)
+                        if (val.drinkType.type == type.type && val.unit.unit == unit.unit) {
+                            console.log(val.count)
+                            newValue += val.count;
+                            newLimit = val.limit
+                            for (const val2 of allDrinks) {
+                                if (val2.type == type.type && val2.unit == unit.unit) {
+                                    val2.count = newValue
+                                    val2.limit = newLimit
+                                    console.log(newValue)
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
             load()
         });
 
 }
+
 
 function fetchDrinkTypes() {
     fetch('http://localhost:8080/api/drinktypes')
@@ -79,7 +184,28 @@ function fetchDrinkTypes() {
         .then(data => {
             drinkTypes = data;
             console.log(data)
-            fetchDrinkUnits();
+            fetchDrinkUnits()
+        });
+
+}
+
+function fetchDrinkTypesAndOpenModal() {
+    fetch('http://localhost:8080/api/drinktypes')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinkTypes = data;
+            console.log(data)
+            fetchDrinkUnitsAndOpenModal();
+        });
+
+}
+
+function fetchDrinkUnitsAndOpenModal() {
+    fetch('http://localhost:8080/api/units')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinkUnits = data;
+            openAddDrinkModal();
         });
 
 }
@@ -89,7 +215,8 @@ function fetchDrinkUnits() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinkUnits = data;
-            openAddDrinkModal();
+            console.log(data)
+            fetchAllDrinks()
         });
 
 }
@@ -207,6 +334,17 @@ function load(){
     //Jenuary is going to be a 0 - like index in an array
     const month = dt.getMonth();
     const year = dt.getFullYear();
+    const realMonth = month + 1;
+    const formattedMonth = realMonth.toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    })
+    const formattedDay = day.toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    })
+
+    today = year + "-" + formattedMonth + "-" + formattedDay
 
     const firstDayOfMonth = new Date(year, month, 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate(); //get last day in current month (for nb if days)
@@ -225,6 +363,7 @@ function load(){
         `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
     //empty view for each month at the beginning so the calendar don't show under current
     calendar.innerHTML = '';
+
 
     for(let i = 1; i <= paddingDays + daysInMonth; i++) {
         const daySquare = document.createElement('div');
@@ -246,14 +385,13 @@ function load(){
                 daySquare.id = 'currentDay';
             }
             if (daySquare.id === 'currentDay') {
-                if (localStorage.getItem("current_day") !== daySquare.innerText) {
-                    //delete all drinks of user
-                    deleteDrinks();
-                    localStorage.setItem("current_day", daySquare.innerText);
-                }
                 const drinkDiv = document.createElement('button');
                 drinkDiv.classList.add('drink');
-                drinkDiv.innerText = "Drinks\nWater: " + localStorage.getItem("water") + "\nCoffee: " + localStorage.getItem("coffee") + "\nEnergy Drinks: " + localStorage.getItem("energy drink");
+                let water = allDrinks.filter(drink => drink.type == 'water' && drink.unit == 'ml');
+                let energy_drinks = allDrinks.filter(drink => drink.type == 'energy drink' && drink.unit == 'ml');
+                let coffee = allDrinks.filter(drink => drink.type == 'coffee' && drink.unit == 'ml');
+                console.log(coffee[0].limit)
+                drinkDiv.innerText = "Drinks\nWater: " + water[0].count + water[0].unit + "/" + water[0].limit + water[0].unit + "\nCoffee: " + coffee[0].count + coffee[0].unit +  "/" + coffee[0].limit + coffee[0].unit + "\nEnergy Drinks: " + energy_drinks[0].count + energy_drinks[0].unit +  "/" + energy_drinks[0].limit + energy_drinks[0].unit;
 
                 daySquare.appendChild(drinkDiv);
             }
@@ -360,12 +498,14 @@ function saveDrink() {
             },
             "unit": {
                 "unit": "gfdsa"
-            }
+            },
+            "drink_date": today
         };
 
         console.log(eventDescription.value);
+        console.log(today)
 
-        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
+        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value + '&drink_date=' + today, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -465,7 +605,7 @@ function initButtons() {
     document.getElementById('cancelButton').addEventListener('click', closeModal);
     document.getElementById('closeButton').addEventListener('click', closeModal);
     document.getElementById('addButton').addEventListener('click', fetchDescription);
-    document.getElementById('addDrinkButton').addEventListener('click', fetchDrinkTypes);
+    document.getElementById('addDrinkButton').addEventListener('click', fetchDrinkTypesAndOpenModal);
     document.getElementById('saveDrinkButton').addEventListener('click', saveDrink);
 
 }
