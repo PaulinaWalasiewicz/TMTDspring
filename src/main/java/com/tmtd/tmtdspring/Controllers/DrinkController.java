@@ -1,23 +1,16 @@
 package com.tmtd.tmtdspring.Controllers;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import com.tmtd.tmtdspring.Models.Category;
-import com.tmtd.tmtdspring.Models.Drink;
+import com.tmtd.tmtdspring.Models.*;
 import com.tmtd.tmtdspring.Repository.DrinkRepository;
+import com.tmtd.tmtdspring.Repository.DrinkTypeRepository;
+import com.tmtd.tmtdspring.Repository.LiquidUnitRepository;
+import com.tmtd.tmtdspring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -25,11 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class DrinkController {
     @Autowired
     DrinkRepository drinkRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    DrinkTypeRepository drinkTypeRepository;
+    @Autowired
+    LiquidUnitRepository liquidUnitRepository;
 
     @GetMapping("/drinks")
     public ResponseEntity<List<Drink>> getAllDrinks(){
         try{
             List<Drink> drinks = new ArrayList<Drink>();
+            drinkRepository.findAll().forEach(drinks::add);
+
             if(drinks.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -38,6 +39,22 @@ public class DrinkController {
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/users/{user_id}/drink")
+    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id) {
+
+        if (!userRepository.existsById(user_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Drink> drinks = drinkRepository.findByUserId(user_id);
+        DrinkType drinkType = drinkTypeRepository.findById(drink_type_id).get();
+        LiquidUnit unit = liquidUnitRepository.findById(drink_unit_id).get();
+
+        List<Drink> drinks2 = drinks.stream().filter(drink -> drink.getDrinkType() == drinkType).toList();
+        List<Drink> drinks3 = drinks2.stream().filter(drink -> drink.getUnit() == unit).toList();
+
+        return new ResponseEntity<>(drinks3, HttpStatus.OK);
     }
     @GetMapping("/drink/{id}")
     public ResponseEntity<Drink> getDrink(@PathVariable("id") long id){
@@ -49,15 +66,18 @@ public class DrinkController {
         }
     }
 
-    @PostMapping("/drink/create")
-    public ResponseEntity<Drink> createDrink(@RequestBody Drink drink){
-        try{
-            Drink drink1 = drinkRepository
-                    .save(new Drink(drink.getUser(), drink.getCount(),drink.getLimit(),drink.getDrinkType(),drink.getUnit()));
-            return  new ResponseEntity<>(drink1,HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/users/{user_id}/drinks")
+    public ResponseEntity<Drink> createDrink(@PathVariable("user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id, @RequestBody Drink drinkRequest){
+
+        Optional<Drink> drink = userRepository.findById(user_id).map(user-> {
+            drinkRequest.setUser(user);
+            drinkRequest.setDrinkType(drinkTypeRepository.findById(drink_type_id).get());
+            drinkRequest.setUnit(liquidUnitRepository.findById(drink_unit_id).get());
+            return drinkRepository.save(drinkRequest);
+        });
+
+
+        return drink.map(value -> new ResponseEntity<>(value, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/drink/update/{id}")

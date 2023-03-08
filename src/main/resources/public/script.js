@@ -6,6 +6,7 @@ const calendar = document.getElementById('calendar');
 const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const editEventModal = document.getElementById('editEventModal');
+const drinkModal = document.getElementById('newDrinkModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const eventStartDate = document.getElementById('eventStartDate');
@@ -15,10 +16,16 @@ const editEventTitleInput = document.getElementById('editEventTitleInput');
 const editEventStartDate = document.getElementById('editEventStartDate');
 const editEventEndDate = document.getElementById('editEventEndDate');
 const editEventDescription = document.getElementById('editEventDescription');
+const drinkTypeInput = document.getElementById('drinkType');
+const drinkUnitInput = document.getElementById('unit');
+const drinkCountInput = document.getElementById('countInput');
+const drinkLimitInput = document.getElementById('limitInput');
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 let events = [];
-let users = [];
 let items = [];
+let drinkTypes = [];
+let drinkUnits = [];
+let drinks = [];
 
 flatpickr("input[type=datetime-local]", {enableTime: true,
                                          dateFormat: "Y-m-d H:i",});
@@ -43,6 +50,46 @@ function fetchDescription() {
             items.length = 0;
             items = data;
             openModal("5666")
+        });
+
+}
+
+function fetchDrinks(type_id, unit_id) {
+    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinks = data;
+            let drinkType = drinkTypes.find(t => t.id == type_id)
+            let drinkUnit = drinkUnits.find(u => u.id == unit_id);
+            let newValue = 0;
+            for (const val of drinks) {
+                //val.count
+                newValue += val.count;
+            }
+            localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
+            console.log(drinkType.type);
+            load()
+        });
+
+}
+
+function fetchDrinkTypes() {
+    fetch('http://localhost:8080/api/drinktypes')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinkTypes = data;
+            console.log(data)
+            fetchDrinkUnits();
+        });
+
+}
+
+function fetchDrinkUnits() {
+    fetch('http://localhost:8080/api/units')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            drinkUnits = data;
+            openAddDrinkModal();
         });
 
 }
@@ -88,6 +135,38 @@ function openModal(date) {
 
     backDrop.style.display = 'block';
 
+}
+
+function openAddDrinkModal() {
+    //let drink = drinks.find(e => e.id === id);
+    for (const val of drinkTypes) {
+        let option = document.createElement("option");
+        option.value = val.id;
+        option.text = val.type.toString();
+
+        if (drinkTypeInput.childElementCount >= 3) {
+            drinkTypeInput.replaceChild(option, drinkTypeInput.lastChild)
+        } else {
+            drinkTypeInput.appendChild(option);
+        }
+    }
+
+    for (const val of drinkUnits) {
+        let option = document.createElement("option");
+        option.value = val.id;
+        option.text = val.unit.toString();
+
+        if (drinkUnitInput.childElementCount >= 3) {
+            drinkUnitInput.replaceChild(option, drinkUnitInput.lastChild)
+        } else {
+            drinkUnitInput.appendChild(option);
+        }
+    }
+
+    drinkModal.style.display = "block";
+    backDrop.style.display = 'block';
+
+    //editEventTitleInput.value = event.title.toString();
 }
 
 function openEditModal(id) {
@@ -166,6 +245,18 @@ function load(){
             if (i - paddingDays === day && nav === 0) {
                 daySquare.id = 'currentDay';
             }
+            if (daySquare.id === 'currentDay') {
+                if (localStorage.getItem("current_day") !== daySquare.innerText) {
+                    //delete all drinks of user
+                    deleteDrinks();
+                    localStorage.setItem("current_day", daySquare.innerText);
+                }
+                const drinkDiv = document.createElement('button');
+                drinkDiv.classList.add('drink');
+                drinkDiv.innerText = "Drinks\nWater: " + localStorage.getItem("water") + "\nCoffee: " + localStorage.getItem("coffee") + "\nEnergy Drinks: " + localStorage.getItem("energy drink");
+
+                daySquare.appendChild(drinkDiv);
+            }
 
             for (const e of eventsForDay) {
                 const eventDiv = document.createElement('button');
@@ -198,6 +289,7 @@ function closeModal() {
     newEventModal.style.display = 'none';
     deleteEventModal.style.display = 'none';
     editEventModal.style.display = 'none';
+    drinkModal.style.display = 'none';
     backDrop.style.display = 'none';
     eventTitleInput.value = '';
     clicked = null;
@@ -238,7 +330,7 @@ function saveEvent() {
             .then(res => res.json())
             .then(data => {
                 console.log(data.toString())
-                fetchEvents()
+                fetchEvents();
             })
             .catch(err => {
                 console.error(err);
@@ -246,6 +338,52 @@ function saveEvent() {
         closeModal();
     } else {
         eventTitleInput.classList.add('error');
+    }
+}
+
+function saveDrink() {
+    if (drinkCountInput.value) {
+        drinkCountInput.classList.remove('error');
+
+        const newDrink = {
+            user: {
+                username: "ddd",
+                password: "567fgg",
+                email: "dfghj",
+                firstName: "dfgh",
+                lastName: "sdfghj"
+            },
+            "count": drinkCountInput.value,
+            "limit": drinkLimitInput.value,
+            "type": {
+                "type": "fdsa"
+            },
+            "unit": {
+                "unit": "gfdsa"
+            }
+        };
+
+        console.log(eventDescription.value);
+
+        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newDrink)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                console.log(data.type)
+                fetchDrinks(drinkTypeInput.value, drinkUnitInput.value);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        closeModal();
+    } else {
+        drinkCountInput.classList.add('error');
     }
 }
 
@@ -299,6 +437,17 @@ function deleteEvent(id) {
     closeModal();
 }
 
+function deleteDrinks() {
+    fetch('http://localhost:8080/api/drinks', {
+        method: 'DELETE'
+    })
+        .then(() => {
+            load()
+        })
+
+    closeModal();
+}
+
 function initButtons() {
     document.getElementById('nextButton').addEventListener('click', () => {
         nav++;
@@ -316,6 +465,8 @@ function initButtons() {
     document.getElementById('cancelButton').addEventListener('click', closeModal);
     document.getElementById('closeButton').addEventListener('click', closeModal);
     document.getElementById('addButton').addEventListener('click', fetchDescription);
+    document.getElementById('addDrinkButton').addEventListener('click', fetchDrinkTypes);
+    document.getElementById('saveDrinkButton').addEventListener('click', saveDrink);
 
 }
 

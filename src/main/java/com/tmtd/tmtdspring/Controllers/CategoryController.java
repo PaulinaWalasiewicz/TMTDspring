@@ -30,9 +30,11 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAllCategories(){
         try{
             List<Category> categories = new ArrayList<Category>();
+            categoryRepository.findAll().forEach(categories::add);
             if(categories.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+
             return new ResponseEntity<>(categories,HttpStatus.OK);
 
         }catch (Exception e){

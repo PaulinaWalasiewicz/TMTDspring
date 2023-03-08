@@ -40,5 +40,13 @@ public class Priority {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Priority{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
 

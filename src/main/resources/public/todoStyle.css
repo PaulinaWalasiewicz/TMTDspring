@@ -1,0 +1,119 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+#logo
+{
+    padding-left: 2px;
+    float: left;
+    height: 60px;
+    width: 60px;
+    background: #206E8C;
+}
+
+body {
+    width: 770px;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    justify-content: center;
+    margin-left: 500px;
+    margin-top: 50px;
+}
+#main-header {
+    background-color: #206e8c;
+    color: #fff;
+    padding: 20px;
+
+
+}
+
+#header h1 {
+    margin-bottom: 10px;
+}
+
+#container {
+    width: 770px;
+}
+
+#container ul {
+    list-style: none;
+    display: flex;
+}
+
+#container ul li {
+    margin-right: 10px;
+}
+
+#container ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#todo-form {
+    margin-top: 20px;
+    display: flex;
+    margin-top: 40px;
+}
+
+#task-name {
+    padding: 10px;
+    flex-grow: 1;
+    margin-right: 10px;
+    border: 1px solid #206e8c;
+}
+
+#todo-form button {
+    background-color: #206e8c;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+}
+
+.stats li {
+    flex-basis: 33%;
+    text-align: center;
+}
+
+.todos {
+    list-style: none;
+    margin-top: 20px;
+
+}
+
+.todos li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+.todos li div {
+    flex-grow: 1;
+    margin-right: 10px;
+
+}
+
+.remove-task {
+    background-color: #206e8c;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.todos li input[type=checkbox]{
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+
+}

@@ -87,6 +87,16 @@ button {
     max-height: 55px;
     overflow: hidden;
 }
+
+.drink {
+    font-size: 8px;
+    padding: 1px;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 5px;
+    max-height: 55px;
+    overflow: hidden;
+}
 .padding {
     cursor: default !important;
     background-color: #FFFCFF !important;
@@ -118,7 +128,7 @@ button {
     position: absolute;
     font-family: sans-serif;
 }
-#eventTitleInput, #editEventTitleInput {
+#eventTitleInput, #editEventTitleInput, #limitInput {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
@@ -130,6 +140,16 @@ button {
 }
 #eventTitleInput.error, #editEventTitleInput.error {
     border: 2px solid red;
+}
+#countInput{
+    padding: 10px;
+    width: 68%;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    box-shadow: 0px 0px 3px gray;
 }
 #eventStartDate, #editEventStartDate {
     padding: 10px;
@@ -163,7 +183,7 @@ button {
 #editButton {
     background-color: aquamarine;
 }
-#saveButton, #closeButton, #saveEditButton {
+#saveButton, #closeButton, #saveEditButton, #saveDrinkButton {
     background-color: #92a1d1;
 }
 #eventText {
@@ -225,7 +245,7 @@ day-calendar {
 .dropbtn {
   background-color: #3498DB;
   color: white;
-  padding: 25px;
+  padding: 10px;
   font-size: 16px;
   width: 100%;
   box-sizing: border-box;
@@ -235,7 +255,20 @@ day-calendar {
   cursor: pointer;
 }
 
-.dropbtn:hover, .dropbtn:focus {
+.dropbtn2 {
+    background-color: #3498DB;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    width: 30%;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus, .dropbtn2:hover, .dropbtn2:focus {
   background-color: #2980B9;
 }
 

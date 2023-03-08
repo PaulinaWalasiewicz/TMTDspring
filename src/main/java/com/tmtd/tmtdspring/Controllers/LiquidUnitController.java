@@ -28,11 +28,12 @@ public class LiquidUnitController {
     @GetMapping("/units")
     public ResponseEntity<List<LiquidUnit>> getAllUnits(){
         try{
-            List<LiquidUnit> priorities = new ArrayList<LiquidUnit>();
-            if(priorities.isEmpty()){
+            List<LiquidUnit> liquidUnits = new ArrayList<LiquidUnit>();
+            liquidUnitRepository.findAll().forEach(liquidUnits::add);
+            if(liquidUnits.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(priorities,HttpStatus.OK);
+            return new ResponseEntity<>(liquidUnits,HttpStatus.OK);
 
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
