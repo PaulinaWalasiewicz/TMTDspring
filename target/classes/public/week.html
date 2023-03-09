@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width",initial-scale="1.0">
+    <title>TMTD - Too Mutch Too Do</title>
+    <link rel="stylesheet" href="week.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+
+<div id="container">
+    <ul>
+        <li><img id="logo" src="/logo.png" alt="LOGO"></li>
+        <li><a href="index.html">Month</a></li>
+        <li><a href="week.html">Week</a></li>
+        <li><a href="todo.html">ToDo</a></li>
+    </ul>
+    <div id="header">
+        <div id="monthDisplay"></div>
+        <div id="weekDisplay"></div>
+        <p>
+            <button id="addButton">Add Event</button>
+            <button id="addDrinkButton">Add Drink</button>
+        </p>
+        <div>
+            <button id="backButton">Back</button>
+            <button id="nextButton">Next</button>
+        </div>
+    </div>
+    <div id="weekdays">
+        <div>Time</div>
+        <div>Sunday</div>
+        <div>Monday</div>
+        <div>Tuesday</div>
+        <div>Wednesday</div>
+        <div>Thursday</div>
+        <div>Friday</div>
+        <div>Saturday</div>
+    </div>
+    <div id="dates"></div>
+    <div id="calendar"></div>
+</div>
+
+<div id="newEventModal" class = "modals">
+    <h2>New Event</h2>
+
+    <input id="eventTitleInput" placeholder="Event Title" />
+    <input class="form-control" id="eventStartDate" type="datetime-local" placeholder="Start Date">
+    <input class="form-control" id="eventEndDate" type="datetime-local" placeholder="End Date">
+    <div id="list">
+        <select class="dropbtn" id="eventDescription">Description</select>
+    </div>
+    <button id="saveButton">Save</button>
+    <button id="cancelButton">Cancel</button>
+</div>
+<div id="deleteEventModal" class="modals">
+    <h2>Event</h2>
+
+    <p id="eventText"></p>
+
+    <button id="deleteButton">Delete</button>
+    <button id="editButton">Edit</button>
+    <button id="closeButton">Close</button>
+</div>
+
+<div id="editEventModal" class="modals">
+    <h2>Edit Event</h2>
+
+    <input id="editEventTitleInput" placeholder="Event Title" />
+    <input class="form-control" id="editEventStartDate" type="datetime-local" placeholder="Start Date">
+    <input class="form-control" id="editEventEndDate" type="datetime-local" placeholder="End Date">
+    <div id="list">
+        <select class="dropbtn" id="editEventDescription">Description</select>
+    </div>
+    <button id="saveEditButton">Save Edit</button>
+    <button id="cancelButton">Cancel</button>
+</div>
+
+<div id="newDrinkModal" class="modals">
+    <h2>Add Drink</h2>
+
+    <div id="list">
+        <select class="dropbtn" id="drinkType">Drink Type</select>
+    </div>
+    <div id="list">
+        <input id="countInput" placeholder="Drinks Count" />
+        <select class="dropbtn2" id="unit">Unit</select>
+    </div>
+    <input id="limitInput" placeholder="Drink Limit" />
+
+    <button id="saveDrinkButton">Save</button>
+    <button id="cancelButton">Cancel</button>
+</div>
+
+<div id="modalBackDrop"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="./week.js"></script>
+</body>
+</html>
