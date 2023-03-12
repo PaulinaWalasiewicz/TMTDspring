@@ -3,7 +3,7 @@ package com.tmtd.tmtdspring.Models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,13 +40,13 @@ public class User implements UserDetails {
     //@Column(name="last_name",nullable = false)
     private String surname;
     //Constructor
-    @Builder.Default
+    
 	private UserRole userRole = UserRole.USER;
 
-	@Builder.Default
+	
 	private Boolean locked = false;
 
-	@Builder.Default
+	
 	private Boolean enabled = false;
     
     @Override
