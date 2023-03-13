@@ -7,27 +7,27 @@ function getTasks(idUser) {
     fetch(`http://localhost:8080/api/users/${idUser}/tasks`)
         .then(res => {
             if(!res.ok){
-                console.log("problem");
+                console.log("getTasks(): Problem");
                 return;
             }
             return res.json();
         })
         .then(data => {
             tasks = data;
-            console.log(tasks.length)
+            console.log("getTasks(): " + tasks.length)
             if(tasks && tasks.length > 0){
-                console.log("Załadowano taski do tablicy");
+                console.log("getTasks(): Loaded tasks to array");
                 tasks.map((task) => {
                     createTask(task);
                 })
                 countTasks();
             }
             else{
-                console.log("No Tasks found");
+                console.log("getTasks(): No Tasks found");
             }
         })
         .catch(error => {
-            console.log("error")
+            console.log("getTasks(): error")
         });
 }
 getTasks(idUser);
@@ -64,16 +64,16 @@ function postTask(idUser,_title ) {
     })
         .then(res => {
             if(!res.ok){
-                console.log("problem");
+                console.log("postTask(): Problem with fetch");
                 return;
             }
             return res.json();
         })
         .then(data => {
-            console.log("Succes")
+            console.log("postTask(): Succes")
         })
         .catch(error => {
-            console.log(error)
+            console.log("postTask(): Problem")
         });
 }
 // function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
@@ -109,17 +109,17 @@ function putTask(taskId, _title, _completed) {
     })
         .then(res => {
             if(!res.ok){
-                console.log("problem");
+                console.log("putTask(): Problem with fetch");
                 return;
             }
             return res.json();
         })
         .then(data => {
-            console.log("Succes")
+            console.log("putTask(): Succes")
             countTasks();
         })
         .catch(error => {
-            console.log(error)
+            console.log("putTask(): Problem")
         });
 }
 
@@ -129,16 +129,16 @@ function deleteTasks(idUser) {
     })
         .then(res => {
             if(!res.ok){
-                console.log("problem");
+                console.log("deleteTasks(): Problem with fetch");
                 return;
             }
             return res.json();
         })
         .then(data => {
-            console.log("Succes delete")
+            console.log("deleteTasks(): Succes delete all User's task ")
         })
         .catch(error => {
-            console.log(error)
+            console.log("deleteTasks(): Problem")
         });
 }
 
@@ -148,16 +148,16 @@ function deleteTask(idTask) {
     })
         .then(res => {
             if(!res.ok){
-                console.log("problem");
+                console.log("deleteTask(): Problem with fetch");
                 return;
             }
             return res.json();
         })
         .then(data => {
-            console.log("Succes delete")
+            console.log("deleteTask(): Succes delete task")
         })
         .catch(error => {
-            console.log(error)
+            console.log("deleteTask(): Problem")
         });
 }
 
@@ -199,7 +199,7 @@ todoForm.addEventListener('submit', (e)=>{
         //     content: "priorityContent"
         // }
     };
-    console.log(newTask)
+    console.log("New Task: " + newTask)
     postTask(idUser, inputValue);
     // getTasks(idUser);
     createTask(newTask);
@@ -210,7 +210,7 @@ todoForm.addEventListener('submit', (e)=>{
 todoList.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-task")) {
         const taskId = e.target.closest('li').id;
-        console.log("Clic "+ taskId)
+        console.log("Removing task: "+ taskId)
         removeTask(taskId);
     }
 })
@@ -218,7 +218,7 @@ todoList.addEventListener("click", (e) => {
 todoList.addEventListener('keydown', (e) => {
     if(e.keyCode ==13){
         e.preventDefault();
-
+        console.log("Clicking on task : ")
         e.target.blur()
     }
 })
@@ -250,22 +250,27 @@ function createTask(task){
 }
 
 function countTasks(){
-    const completedTasksArray = tasks.filter((task) =>{
-        task.completed === "true"
-        console.log(task.completed);
-    })
-    console.log("liczy taski")
+
+    const completedTasksArray = []
+
+    for (let i=0; i < tasks.length; i++){
+        const task = tasks[i];
+        if(task.completed) {
+            completedTasksArray.push(task)
+        }
+    }
+    console.log("completedTasksArray length: " + completedTasksArray.length)
+    console.log("countTasks(): Counting tasks")
     totalTask.textContent = tasks.length
     completedTask.textContent = completedTasksArray.length
     remainingTask.textContent = tasks.length - completedTasksArray.length
 }
-
 function removeTask(taskId){
     tasks = tasks.filter((task) =>
         task.id !== parseInt(taskId)
     )
     deleteTask(taskId);
-    console.log("cliccck: "+ taskId);
+    console.log("removeTask(): Clicked to remove: "+ taskId);
     document.getElementById(taskId).remove();
     countTasks();
 }
@@ -288,8 +293,8 @@ function updateTask(taskId, el){
             span.setAttribute('contenteditable', 'true')
             parent.classList.remove('complete')
         }
-        console.log("spanV: "+ task.title);
-        console.log("completed: "+ task.completed)
+        console.log("updateTask(): Title: "+ task.title);
+        console.log("updateTask(): Is completed?: "+ task.completed)
         putTask(taskId, task.title, task.completed)
         countTasks();
     }
