@@ -40,8 +40,20 @@ public class DrinkController {
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/users/{user_id}/drinks")
+    //@GetMapping("/users/events")
+    public ResponseEntity<List<Drink>> getAllEventsByUserId(@PathVariable(value = "user_id") Long user_id) {
+
+        if (!userRepository.existsById(user_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Drink> drinks = drinkRepository.findByUserId(user_id);
+        return new ResponseEntity<>(drinks, HttpStatus.OK);
+    }
+
     @GetMapping("/users/{user_id}/drink")
-    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id) {
+    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id, @RequestParam(required = true) String drink_date) {
 
         if (!userRepository.existsById(user_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -53,8 +65,9 @@ public class DrinkController {
 
         List<Drink> drinks2 = drinks.stream().filter(drink -> drink.getDrinkType() == drinkType).toList();
         List<Drink> drinks3 = drinks2.stream().filter(drink -> drink.getUnit() == unit).toList();
+        List<Drink> drinks4 = drinks3.stream().filter(drink -> drink.getDrink_date().toString() == drink_date).toList();
 
-        return new ResponseEntity<>(drinks3, HttpStatus.OK);
+        return new ResponseEntity<>(drinks4, HttpStatus.OK);
     }
     @GetMapping("/drink/{id}")
     public ResponseEntity<Drink> getDrink(@PathVariable("id") long id){
@@ -88,6 +101,7 @@ public class DrinkController {
             Drink drink1 = optionalDrink.get();
             drink1.setLimit(drink.getLimit());
             drink1.setDrinkType(drink.getDrinkType());
+            drink1.setUnit(drink.getUnit());
             drink1.setUser(drink.getUser());
             drink1.setCount(drink.getCount());
             return new ResponseEntity<>(drinkRepository.save(drink1), HttpStatus.OK);
