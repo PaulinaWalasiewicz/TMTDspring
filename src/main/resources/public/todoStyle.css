@@ -87,17 +87,21 @@ body {
     padding: 10px;
     flex-grow: 1;
     margin-right: 10px;
-    border: 1px solid #206e8c;
-    border: none;
-    outline: none;
-    box-shadow: 0px 0px 2px gray;
 }
 
 #todo-form #task-name{
     width: 60%;
 }
-
+input .form-task {
+    margin-left: 10px;
+    margin-right: 20px;
+    border: 1px solid #206e8c;
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 2px gray;
+}
 #todo-form button {
+    margin-left: 10px;
     padding: 10px;
     color: #206E8C;
     font-family: sans-serif;

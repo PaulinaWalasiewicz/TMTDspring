@@ -19,19 +19,21 @@
 <div id="header">
     <h1 class="css-title">TMTD Todo List</h1>
 
-    <form action="" id="todo-form">
+    <form class="form-task" action="" id="todo-form">
         <input id="task-name" type="text" name="task-name" placeholder="enter your task.." autofocus>
-        <input id="task-description" type="text" name="task-description" placeholder="    add your description task" list="descriptionList" autofocus>
-        <datalist id="descriptionList">
-            <option value="Personal"></option>"
-        </datalist>
-        <input id="task-category" type="text" name="task-category" placeholder="    add your category task" list="categoryList" autofocus>
-        <datalist id="categoryList">
-            <option value="Personal"></option>"
-        </datalist>
+<!--        <input id="task-description" type="text" name="task-description" placeholder="    add your description task" list="descriptionList" autofocus>-->
+<!--        <datalist id="descriptionList">-->
+<!--            <option value="Personal"></option>"-->
+<!--        </datalist>-->
+<!--        <input id="task-category" type="text" name="task-category" placeholder="    add your category task" list="categoryList" autofocus>-->
+<!--        <datalist id="categoryList">-->
+<!--            <option value="Personal"></option>"-->
+<!--        </datalist>-->
         <input id="task-priority" type="text" name="task-priority" placeholder="    add your priority task" list="priorityList" autofocus>
         <datalist id="priorityList">
-            <option value="Personal"></option>"
+            <option value="low"></option>"
+            <option value="medium"></option>"
+            <option value="high"></option>"
         </datalist>
         <input type="date" id="task-date">
         <button type="submit">Add task</button>
@@ -57,7 +59,6 @@
     <ul class="todos">
 
     </ul>
-    </div>
 </selection>
 
 <script src="todoScript.js"></script>

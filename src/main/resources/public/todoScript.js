@@ -18,6 +18,7 @@ function getTasks(idUser) {
             if(tasks && tasks.length > 0){
                 console.log("getTasks(): Loaded tasks to array");
                 tasks.map((task) => {
+                    console.log("Task: " + task);
                     createTask(task);
                 })
                 countTasks();
@@ -27,35 +28,44 @@ function getTasks(idUser) {
             }
         })
         .catch(error => {
-            console.log("getTasks(): error")
+            console.log("getTasks(): error" + tasks.length)
         });
 }
 getTasks(idUser);
-// function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
-function postTask(idUser,_title ) {
+
+function postTask(idUser, _title, _priority, _dueDate) {
     const newTask = {
         title: _title,
         description: {
             content: "descriptionContent"
         },
-        startTime: "2016-03-04 11:08",
+        startTime: _dueDate,
         completed: false,
         user: {
             username: "admin",
             password: "admin",
-            email: "dfghj",
-            firstName: "dfgh",
-            lastName: "sdfghj"
+            email: "email@adnim",
+            firstName: "Adam",
+            lastName: "Kowalski"
         },
         category: {
             content: "categoryContent"
         },
         priority: {
-            content: "priorityContent"
+            content: _priority
         }
     };
 
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&priority_id=2002&category_id=2052`, {
+    let priorityId = 11952
+    if(_priority === "medium"){
+        priorityId = 11953;
+    }
+    if(_priority === "high"){
+        priorityId = 11954;
+    }
+    console.log("priorityId: " + priorityId)
+
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&priority_id=${priorityId}&category_id=2052`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -70,14 +80,18 @@ function postTask(idUser,_title ) {
             return res.json();
         })
         .then(data => {
-            console.log("postTask(): Succes")
+            countTasks();
+            console.log("postTask(): Success")
         })
         .catch(error => {
             console.log("postTask(): Problem")
         });
+    tasks.push(newTask);
+    countTasks();
+
 }
 // function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
-function putTask(taskId, _title, _completed) {
+function putTask(taskId, _title, _completed, _priority) {
     const putTask = {
         title: _title,
         description: {
@@ -88,19 +102,28 @@ function putTask(taskId, _title, _completed) {
         user: {
             username: "admin",
             password: "admin",
-            email: "dfghj",
-            firstName: "dfgh",
-            lastName: "sdfghj"
+            email: "email@adnim",
+            firstName: "Adam",
+            lastName: "Kowalski"
         },
         category: {
             content: "categoryContent"
         },
         priority: {
-            content: "priorityContent"
+            content: _priority
         }
     };
 
-    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&priority_id=2002&category_id=2052`, {
+    let priorityId = 11952
+    if(_priority === "medium"){
+        priorityId = 11953;
+    }
+    if(_priority === "high"){
+        priorityId = 11954;
+    }
+    console.log("priorityId: " + priorityId)
+
+    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&priority_id=${priorityId}&category_id=2052`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -115,7 +138,7 @@ function putTask(taskId, _title, _completed) {
             return res.json();
         })
         .then(data => {
-            console.log("putTask(): Succes")
+            console.log("putTask(): Success")
             countTasks();
         })
         .catch(error => {
@@ -135,7 +158,7 @@ function deleteTasks(idUser) {
             return res.json();
         })
         .then(data => {
-            console.log("deleteTasks(): Succes delete all User's task ")
+            console.log("deleteTasks(): Success   delete all User's task ")
         })
         .catch(error => {
             console.log("deleteTasks(): Problem")
@@ -151,10 +174,10 @@ function deleteTask(idTask) {
                 console.log("deleteTask(): Problem with fetch");
                 return;
             }
-            return res.json();
+            return;
         })
         .then(data => {
-            console.log("deleteTask(): Succes delete task")
+            console.log("deleteTask(): Success delete task")
         })
         .catch(error => {
             console.log("deleteTask(): Problem")
@@ -166,45 +189,54 @@ const todoList = document.querySelector('.todos');
 const totalTask = document.querySelector('#total-task');
 const completedTask = document.querySelector('#completed-task');
 const remainingTask = document.querySelector('#remaining-task');
-const mainInput = document.querySelector('#task-name');
+const titleInput = document.querySelector('#task-name');
+const priorityInput = document.querySelector('#task-priority');
+const dueDateInput = document.querySelector('#task-date');
 const deleteAllBtn = document.querySelector('#delete-todo');
 
 
 todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
 
-    const inputValue = mainInput.value;
+    const inputValue_title = titleInput.value;
+    const inputValue_priority = priorityInput.value;
+    console.log("Priority: " + inputValue_priority);
+    const inputValue_dueDate = dueDateInput.value + " 12:00";
+    console.log("DueDate: " + inputValue_dueDate);
 
-    if(inputValue == " "){
+
+    if(inputValue_title == " "){
         return
     }
     const newTask = {
-        title: inputValue,
-        // description: {
-        //     content: "descriptionContent"
-        // },
-        dueDate: "2016-03-04 11:08",
+        title: inputValue_title,
+        description: {
+            content: "descriptionContent"
+        },
+        dueDate: inputValue_dueDate,
         completed: false,
-        // user: {
-        //     username: "admin",
-        //     password: "admin",
-        //     email: "dfghj",
-        //     firstName: "dfgh",
-        //     lastName: "sdfghj"
-        // },
-        // category: {
-        //     content: "categoryContent"
-        // },
-        // priority: {
-        //     content: "priorityContent"
-        // }
+        user: {
+            username: "admin",
+            password: "admin",
+            email: "email@adnim",
+            firstName: "Adam",
+            lastName: "Kowalski"
+        },
+        category: {
+            content: "categoryContent"
+        },
+        priority: {
+            content: inputValue_priority
+        }
     };
-    console.log("New Task: " + newTask)
-    postTask(idUser, inputValue);
+    console.log("New task: " + newTask.title, newTask.completed, newTask.priority.content)
+    postTask(idUser, inputValue_title, inputValue_priority, inputValue_dueDate);
     // getTasks(idUser);
     createTask(newTask);
     todoForm.reset();
-    mainInput.focus();
+    titleInput.focus();
+    priorityInput.focus();
+    dueDateInput.focus();
     })
 
 todoList.addEventListener("click", (e) => {
@@ -230,10 +262,9 @@ todoList.addEventListener("input", (e) => {
 
 function createTask(task){
     const taskEl = document.createElement('li');
-
     taskEl.setAttribute('id', task.id)
 
-    if( task.completed){
+    if(task.completed){
         taskEl.classList.add('complete');
     }
 
@@ -242,7 +273,9 @@ function createTask(task){
         <input type="checkbox" name="tasks" id="${task.id}" ${task.completed ? 'checked' : ''} >
         <span ${!task.completed ? 'contenteditable' : ''} > ${task.title}</span>
     </div>
-    <button title="remove the '${task.title}' task" class="remove-task" > remove </button> `
+    <button title="remove the '${task.title}' task" class="remove-task" > remove </button> 
+    <h4>priority ${task.priority}</h4>
+    <h4>due date: ${task.dueDate}</h4>`
 
     taskEl.innerHTML = taskElMarkup;
 
@@ -250,7 +283,6 @@ function createTask(task){
 }
 
 function countTasks(){
-
     const completedTasksArray = []
 
     for (let i=0; i < tasks.length; i++){
@@ -295,7 +327,7 @@ function updateTask(taskId, el){
         }
         console.log("updateTask(): Title: "+ task.title);
         console.log("updateTask(): Is completed?: "+ task.completed)
-        putTask(taskId, task.title, task.completed)
+        putTask(taskId, task.title, task.completed, task.priority)
         countTasks();
     }
 }
