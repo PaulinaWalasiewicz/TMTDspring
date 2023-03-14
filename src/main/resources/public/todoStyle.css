@@ -6,6 +6,10 @@
 a, li, ul {
     text-decoration: none;
 }
+
+h3 {
+    display: inline-block;
+}
 #logo
 {
     padding-left: 2px;
@@ -177,7 +181,6 @@ input .form-task {
     margin-right: 40px;
     text-decoration: none;
     color: white;
-    font-weight: semi-bold;
     outline: none;
     border: none;
     box-shadow: 0px 0px 3px gray;

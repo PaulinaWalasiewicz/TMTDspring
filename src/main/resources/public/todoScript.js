@@ -28,7 +28,7 @@ function getTasks(idUser) {
             }
         })
         .catch(error => {
-            console.log("getTasks(): error" + tasks.length)
+            console.log("getTasks(): error " + tasks.length)
         });
 }
 getTasks(idUser);
@@ -273,9 +273,9 @@ function createTask(task){
         <input type="checkbox" name="tasks" id="${task.id}" ${task.completed ? 'checked' : ''} >
         <span ${!task.completed ? 'contenteditable' : ''} > ${task.title}</span>
     </div>
-    <button title="remove the '${task.title}' task" class="remove-task" > remove </button> 
-    <h4>priority ${task.priority}</h4>
-    <h4>due date: ${task.dueDate}</h4>`
+    <button title="remove the '${task.title}' task" class="remove-task" style="margin-top:5px"> remove </button> 
+    <h3 class="priority-task" style="display:inline-block; color:#206E8C;border-radius:30px;border: 3px solid #206E8C; width:fit-content;padding:3px;">priority ${task.priority}</h3>
+    <h3 class="date-task" style="display:inline-block;color:#d36c6c;border-radius:30px;border: 3px solid #d36c6c; width:fit-content;padding:3px;">due date: ${task.dueDate}</h3>`
 
     taskEl.innerHTML = taskElMarkup;
 
