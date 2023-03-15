@@ -1,10 +1,8 @@
 package com.tmtd.tmtdspring.Controllers;
 
-import com.tmtd.tmtdspring.Models.Event;
 import com.tmtd.tmtdspring.Models.Task;
 import com.tmtd.tmtdspring.Repository.TaskRepository;
 import com.tmtd.tmtdspring.Repository.CategoryRepository;
-import com.tmtd.tmtdspring.Repository.PriorityRepository;
 import com.tmtd.tmtdspring.Repository.DescriptionRepository;
 import com.tmtd.tmtdspring.Repository.UserRepository;
 
@@ -32,8 +30,6 @@ public class TaskController {
     private DescriptionRepository descriptionRepository;
 
     @Autowired
-    private PriorityRepository priorityRepository;
-    @Autowired
     private CategoryRepository categoryRepository;
 
     @GetMapping("/tasks/{id}")
@@ -53,12 +49,12 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
     @PostMapping("/users/{user_id}/tasks")
-    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) long priority_id, @RequestParam(required = false) long category_id,@RequestBody Task taskRequest) {
+    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) String priority, @RequestParam(required = false) long category_id, @RequestBody Task taskRequest) {
 
         Optional<Task> task = userRepository.findById(user_id).map(user-> {
             taskRequest.setUser(user);
             taskRequest.setDescription(descriptionRepository.findById(description_id).get());
-            taskRequest.setPriority(priorityRepository.findById(priority_id).get());
+            taskRequest.setPriority(priority);
             taskRequest.setCategory(categoryRepository.findById(category_id).get());
             return taskRepository.save(taskRequest);
         });
