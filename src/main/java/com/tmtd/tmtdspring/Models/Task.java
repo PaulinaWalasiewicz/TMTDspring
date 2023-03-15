@@ -42,11 +42,10 @@ public class Task {
     @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JsonIgnore
     @JoinColumn(name = "priority_id")
-    private Priority priority;
+    private String priority;
 
     public Task(String title,
                 Description description,
@@ -54,7 +53,7 @@ public class Task {
                 boolean completed,
                 User user,
                 Category category,
-                Priority priority) {
+                String priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -126,11 +125,11 @@ public class Task {
         this.category = category;
     }
 
-    public Priority getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 }
