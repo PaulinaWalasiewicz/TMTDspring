@@ -51,11 +51,9 @@ function postTask(idUser, _title, _priority, _dueDate) {
         category: {
             content: "categoryContent"
         },
-        priority: {
-            content: _priority
-        }
+        priority: _priority
     };
-    console.log("postTask(): ---Priority "+newTask.priority.content)
+    console.log("postTask(): ---Priority "+newTask.priority)
     let priorityId = 11952
     if(_priority === "medium"){
         priorityId = 11953;
@@ -65,7 +63,7 @@ function postTask(idUser, _title, _priority, _dueDate) {
     }
     // console.log("priorityId: " + priorityId)
 
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&priority_id=${priorityId}&category_id=2052`, {
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&category_id=2052`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -81,17 +79,17 @@ function postTask(idUser, _title, _priority, _dueDate) {
         })
         .then(data => {
             countTasks();
-            console.log("postTask(): Success")
+            console.log("postTask(): Success " + data.toString())
         })
         .catch(error => {
             console.log("postTask(): Problem")
         });
-    console.log("How do new task look: "+ newTask.priority.content +" string "+ JSON.stringify(newTask))
+    console.log("How do new task look: "+ newTask.priority +" string "+ JSON.stringify(newTask))
     tasks.push(newTask);
     countTasks();
 
 }
-// function postTask(_title, _description, _dueDate, _idUser, _category, _priority ) {
+
 function putTask(taskId, _title, _completed, _priority) {
     const putTask = {
         title: _title,
@@ -110,11 +108,9 @@ function putTask(taskId, _title, _completed, _priority) {
         category: {
             content: "categoryContent"
         },
-        priority: {
-            content: _priority
-        }
+        priority: _priority
     };
-    console.log("putTask(): ---Priority"+putTask.priority.content +" string " + JSON.stringify(putTask) )
+    console.log("putTask(): ---Priority"+putTask.priority +" string " + JSON.stringify(putTask) )
     let priorityId = 11952
     if(_priority === "medium"){
         priorityId = 11953;
@@ -124,7 +120,7 @@ function putTask(taskId, _title, _completed, _priority) {
     }
     console.log("priorityId: " + priorityId)
 
-    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&priority_id=${priorityId}&category_id=2052`, {
+    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&category_id=2052`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -226,12 +222,10 @@ todoForm.addEventListener('submit', (e)=>{
         category: {
             content: "categoryContent"
         },
-        priority: {
-            content: inputValue_priority
-        }
+        priority: inputValue_priority
     };
-    console.log("---Priority"+ newTask.priority.content)
-    console.log("New task: " + newTask.title, newTask.completed, newTask.priority.content)
+    // console.log("---Priority"+ newTask.priority)
+    console.log("New task: " + newTask.title, newTask.completed, newTask.priority)
     postTask(idUser, inputValue_title, inputValue_priority, inputValue_dueDate);
     // getTasks(idUser);
     createTask(newTask);
