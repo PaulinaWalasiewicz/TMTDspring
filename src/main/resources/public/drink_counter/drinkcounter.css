@@ -6,30 +6,23 @@
     box-sizing: border-box;
     font-family: 'Poppins',sans-serif;
 }
-/*body{*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    min-height: 100vh;*/
-/*    background-color: #206E8C;*/
-/*    overflow: hidden;*/
-/*}*/
+
 .navigation{
     position: relative;
     width: 50px;
     height: 50px;
     background: #ffffff;
+    transition: 0.5s;
     z-index: 100000;
     border-radius: 4px;
     overflow: hidden;
     transition: width 0.5s,height 0.5s;
     transition-delay: 0s,0.75s;
-    /*background: #649DB4;*/
 
 }
 .navigation.active{
     width: 400px;
-    height: 280px;
+    height: 270px;
     transition: height 0.5s,width 0.5s;
     transition-delay: 0s,0.75s;
 
@@ -86,9 +79,10 @@
 }
 .navigation ul li a{
     position: relative;
-    /*display: block;*/
+    display: block;
     display: flex;
     width: 100%;
+    padding: 3%;
     text-decoration: none;
     color: #206E8C;
 }
@@ -119,4 +113,56 @@
 .navigation ul li:hover a .icon .fa,
 .navigation ul li:hover a .title{
     color: white;
+}
+
+.form{
+    background-color: #2888AD;
+    color: #ffffff;
+    position: absolute;
+    width: 100%;
+
+}
+
+.navigation h1{
+    background-color: #2888AD;
+    color: #ffffff;
+    position: relative;
+    padding: 3%;
+    text-align: center;
+    font-family: 'Poppins',sans-serif;
+    /* position: absolute; */
+    /* width: 100%; */
+}
+
+.form button{
+    background-color: #ffffff;
+    color: #ffffff;
+    border-color: #649db4;
+    position: relative;
+    width: 20%;
+
+}
+.navigation button{
+    background-color: #206E8C;
+    color: #ffffff;
+    border-color: #2888AD;
+    position: relative;
+    /* width: 20%; */
+
+}
+
+.btn {
+
+    display:block;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    border: 1px solid;
+    font-weight: bold;
+
+}
+
+.form_drink{
+    background-color: #2888AD;
+
 }
