@@ -1,17 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
-*
-{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins',sans-serif;
-}
+/***/
+/*{*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*    font-family: 'Poppins',sans-serif;*/
+/*}*/
 
 .navigation{
+    display: block;
     position: relative;
     width: 50px;
     height: 50px;
-    background: #ffffff;
+    /*background: #ffffff;*/
+    background-color: #2888AD;
     transition: 0.5s;
     z-index: 100000;
     border-radius: 4px;
@@ -152,7 +154,7 @@
 }
 
 .btn {
-
+    background-color: #2888AD;
     display:block;
     height: 40px;
     width: 40px;
