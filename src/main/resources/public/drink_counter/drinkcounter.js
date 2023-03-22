@@ -351,6 +351,7 @@ form.appendChild(br.cloneNode());
 // Create submit button element
 const submitButton = document.createElement('button');
 submitButton.setAttribute('type', 'submit');
+submitButton.classList.add('btnFrom');
 submitButton.textContent = 'Submit';
 form.appendChild(submitButton);
 // form.appendChild(br.cloneNode());
