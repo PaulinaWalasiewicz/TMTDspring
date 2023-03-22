@@ -136,7 +136,7 @@ function fetchDrinks(type_id, unit_id, date) {
                 }
             }
             //localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
-            console.log(drinkType.type);
+            // console.log(drinkType.type);
             load();
         });
 
@@ -147,23 +147,23 @@ function fetchAllDrinks() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks2 = data;
-            console.log(data)
+            // console.log(data)
             for (const type of drinkTypes) {
                 let newValue = 0;
                 for (const unit of drinkUnits) {
                     let newValue = 0;
                     let newLimit = 0;
                     for (const val of drinks2) {
-                        console.log(val.unit.unit)
+                        // console.log(val.unit.unit)
                         if (val.drinkType.type == type.type && val.unit.unit == unit.unit) {
-                            console.log(val.count)
+                            // console.log(val.count)
                             newValue += val.count;
                             newLimit = val.limit
                             for (const val2 of allDrinks) {
                                 if (val2.type == type.type && val2.unit == unit.unit) {
                                     val2.count = newValue
                                     val2.limit = newLimit
-                                    console.log(newValue)
+                                    // console.log(newValue)
                                 }
                             }
                         }
@@ -183,7 +183,7 @@ function fetchDrinkTypes() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinkTypes = data;
-            console.log(data)
+            // console.log(data)
             fetchDrinkUnits()
         });
 
@@ -194,7 +194,7 @@ function fetchDrinkTypesAndOpenModal() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinkTypes = data;
-            console.log(data)
+            // console.log(data)
             fetchDrinkUnitsAndOpenModal();
         });
 
@@ -215,7 +215,7 @@ function fetchDrinkUnits() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinkUnits = data;
-            console.log(data)
+            // console.log(data)
             fetchAllDrinks()
         });
 
@@ -235,7 +235,7 @@ function fetchAnotherDescription(id) {
 
 function openModal(date) {
 
-    console.log(events);
+    // console.log(events);
 
     for (const val of items) {
         let option = document.createElement("option");
@@ -390,7 +390,7 @@ function load(){
                 let water = allDrinks.filter(drink => drink.type == 'water' && drink.unit == 'ml');
                 let energy_drinks = allDrinks.filter(drink => drink.type == 'energy drink' && drink.unit == 'ml');
                 let coffee = allDrinks.filter(drink => drink.type == 'coffee' && drink.unit == 'ml');
-                console.log(coffee[0].limit)
+                // console.log(coffee[0].limit)
                 drinkDiv.innerText = "Drinks\nWater: " + water[0].count + water[0].unit + "/" + water[0].limit + water[0].unit + "\nCoffee: " + coffee[0].count + coffee[0].unit +  "/" + coffee[0].limit + coffee[0].unit + "\nEnergy Drinks: " + energy_drinks[0].count + energy_drinks[0].unit +  "/" + energy_drinks[0].limit + energy_drinks[0].unit;
 
                 daySquare.appendChild(drinkDiv);
@@ -455,8 +455,10 @@ function saveEvent() {
                 content: "dfghj"
             }
         };
+        callNotif("Upcoming event: "+eventTitleInput.value)
+        // console.log(eventDescription.value);
 
-        console.log(eventDescription.value);
+
 
         fetch('http://localhost:8080/api/users/404/events?description_id=' + eventDescription.value, {
             method: 'POST',
@@ -467,12 +469,13 @@ function saveEvent() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data.toString())
+                // console.log(data.toString())
                 fetchEvents();
             })
             .catch(err => {
                 console.error(err);
             });
+
         closeModal();
     } else {
         eventTitleInput.classList.add('error');
@@ -502,8 +505,8 @@ function saveDrink() {
             "drink_date": today
         };
 
-        console.log(eventDescription.value);
-        console.log(today)
+        // console.log(eventDescription.value);
+        // console.log(today)
 
         fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value + '&drink_date=' + today, {
             method: 'POST',
@@ -514,8 +517,8 @@ function saveDrink() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
-                console.log(data.type)
+                // console.log(data)
+                // console.log(data.type)
                 fetchDrinks(drinkTypeInput.value, drinkUnitInput.value);
             })
             .catch(err => {
@@ -545,7 +548,7 @@ function editEvent(id) {
             }
         };
 
-        console.log(eventDescription.value);
+        // console.log(eventDescription.value);
 
         fetch('http://localhost:8080/api/events/' + id, {
             method: 'PUT',
@@ -556,7 +559,7 @@ function editEvent(id) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 fetchEvents()
             })
             .catch(err => {
@@ -570,7 +573,7 @@ function deleteEvent(id) {
         method: 'DELETE'
     })
         .then(() => {
-            console.log(id+ " deleted")
+            // console.log(id+ " deleted")
             fetchEvents()
         })
 
@@ -612,4 +615,7 @@ function initButtons() {
 
 initButtons();
 fetchEvents();
+checkForUpcomingEvents();
+// Check for upcoming events every 5 minutes
+setInterval(checkForUpcomingEvents, 5 * 60 * 1000);
 //load();
