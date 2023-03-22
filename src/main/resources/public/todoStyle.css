@@ -191,3 +191,75 @@ body {
 #weekdays li:nth-child(3) {
     background-color: #92a1d1;
 }
+
+#container2{
+    width:400px;
+    margin:20px auto;
+    padding:20px;
+    text-align:center;
+}
+
+#pomodoro-header{
+    color: black;
+}
+
+#timer{
+    color:#fff;
+    font-size:50px;
+    margin:10px auto;
+    border : 2px solid white;
+    border-radius:50%;
+    width:200px;
+    height:200px;
+    overflow:hidden;
+    position:relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor:default;
+    background : #206E8C;
+}
+
+#time{
+    margin-top:70px;
+    z-index : 1;
+    position:relative;
+}
+
+#filler{
+    background : rgb(147, 191, 207);
+    height: 0px;
+    width: 200px;
+    position:absolute;
+    bottom:0;
+}
+
+#buttons {
+    position: relative;
+}
+
+#buttons button {
+    background:#92a1d1;
+    border:none;
+    color:#fff;
+    cursor:pointer;
+    padding:5px;
+    width:90px;
+    margin:10px auto;
+    font-size:14px;
+    height : 50px;
+    border-radius : 50px;
+}
+
+#buttons button#shortBreak{
+    background : rgb(174, 219, 206);
+}
+
+#buttons button#longBreak{
+    background : rgb(106, 197, 167);
+}
+
+#buttons button#stop{
+    background : #d36c6c;
+}
