@@ -43,8 +43,7 @@ public class Task {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
-    @JoinColumn(name = "priority_id")
+    @Column(name = "priority")
     private String priority;
 
     public Task(String title,
