@@ -137,7 +137,7 @@ function postTask(idUser, _title, _priority, _dueDate) {
         category: {
             content: "categoryContent"
         },
-        priority: _priority
+        priority: "low"
     };
     console.log("postTask(): ---Priority "+newTask.priority)
     let priorityId = 11952
@@ -149,7 +149,7 @@ function postTask(idUser, _title, _priority, _dueDate) {
     }
     // console.log("priorityId: " + priorityId)
 
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&category_id=2052`, {
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?description_id=4304&category_id=2052`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -197,14 +197,6 @@ function putTask(taskId, _title, _completed, _priority) {
         priority: _priority
     };
     console.log("putTask(): ---Priority"+putTask.priority +" string " + JSON.stringify(putTask) )
-    let priorityId = 11952
-    if(_priority === "medium"){
-        priorityId = 11953;
-    }
-    if(_priority === "high"){
-        priorityId = 11954;
-    }
-    console.log("priorityId: " + priorityId)
 
     fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&category_id=2052`, {
         method: 'PUT',
@@ -381,8 +373,6 @@ function countTasks(){
             completedTasksArray.push(task)
         }
     }
-    // console.log("completedTasksArray length: " + completedTasksArray.length)
-    // console.log("countTasks(): Counting tasks")
     totalTask.textContent = tasks.length
     completedTask.textContent = completedTasksArray.length
     remainingTask.textContent = tasks.length - completedTasksArray.length

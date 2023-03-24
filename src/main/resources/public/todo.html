@@ -3,96 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width",initial-scale="1.0">
-    <meta name="viewport" content="width=device-width", initial-scale="1.0">
     <title>TMTD - Too Do</title>
     <link rel="stylesheet" href="todoStyle.css">
     <link rel="stylesheet" href="./drink_counter/drinkcounter.css">
-
 </head>
 <body>
+    <div id="container">
+        <ul>
+            <li><img id="logo" src="/logo.png" alt="LOGO" ></li>
+            <li><a href="index.html">Month</a></li>
+            <li><a href="week.html">Week</a></li>
+            <li><a href="todo.html">ToDo</a></li>
+        </ul>
+    </div>
+    <div id="header">
 
-<div id="container">
-    <ul>
-        <li><img id="logo" src="/logo.png" alt="LOGO" ></li>
-        <li><a href="index.html">Month</a></li>
-        <li><a href="week.html">Week</a></li>
-        <li><a href="todo.html">ToDo</a></li>
-    </ul>
-</div>
-<div id="header">
-
-<<<<<<< HEAD
-        <form class="form-task" action="" id="todo-form">
-=======
-    <div id="pomodoro-app">
-        <div id="container2">
-            <div id="timer">
-                <div id="time">
-                    <span id="minutes">25</span>
-                    <span id="colon">:</span>
-                    <span id="seconds">00</span>
+        <div id="pomodoro-app">
+            <div id="container2">
+                <div id="timer">
+                    <div id="time">
+                        <span id="minutes">25</span>
+                        <span id="colon">:</span>
+                        <span id="seconds">00</span>
+                    </div>
+                    <div id="filler"></div>
                 </div>
-                <div id="filler"></div>
-            </div>
 
-            <div id="buttons">
-                <button id="work">Work</button>
-                <button id="shortBreak">Short Break</button>
-                <button id="longBreak">Long Break</button>
-                <button id="stop">Stop</button>
+                <div id="buttons">
+                    <button id="work">Work</button>
+                    <button id="shortBreak">Short Break</button>
+                    <button id="longBreak">Long Break</button>
+                    <button id="stop">Stop</button>
+                </div>
             </div>
         </div>
+
+        <form class="form-task" action="" id="todo-form">
+            <input id="task-name" type="text" name="task-name" placeholder="enter your task.." autofocus>
+    <!--        <input id="task-description" type="text" name="task-description" placeholder="    add your description task" list="descriptionList" autofocus>-->
+    <!--        <datalist id="descriptionList">-->
+    <!--            <option value="Personal"></option>"-->
+    <!--        </datalist>-->
+    <!--        <input id="task-category" type="text" name="task-category" placeholder="    add your category task" list="categoryList" autofocus>-->
+    <!--        <datalist id="categoryList">-->
+    <!--            <option value="Personal"></option>"-->
+    <!--        </datalist>-->
+            <input id="task-priority" type="text" name="task-priority" placeholder="    add your priority task" list="priorityList" autofocus >
+            <datalist id="priorityList">
+                <option value="low"></option>"
+                <option value="medium"></option>"
+                <option value="high"></option>"
+            </datalist>
+            <input type="date" id="task-date">
+            <button type="submit">Add task</button>
+        </form>
+
+        <ul class="stats" id="weekdays">
+            <li>
+                <span>Remaining</span>
+                <span id="remaining-task">0</span>
+            </li>
+            <li>
+                <span>Completed</span>
+                <span id="completed-task">0</span>
+            </li>
+            <li>
+                <span>Total</span>
+                <span id="total-task">0</span>
+            </li>
+        </ul>
     </div>
 
-    <form action="" id="todo-form">
->>>>>>> master
-        <input id="task-name" type="text" name="task-name" placeholder="enter your task.." autofocus>
-<!--        <input id="task-description" type="text" name="task-description" placeholder="    add your description task" list="descriptionList" autofocus>-->
-<!--        <datalist id="descriptionList">-->
-<!--            <option value="Personal"></option>"-->
-<!--        </datalist>-->
-<!--        <input id="task-category" type="text" name="task-category" placeholder="    add your category task" list="categoryList" autofocus>-->
-<!--        <datalist id="categoryList">-->
-<!--            <option value="Personal"></option>"-->
-<!--        </datalist>-->
-        <input id="task-priority" type="text" name="task-priority" placeholder="    add your priority task" list="priorityList" autofocus>
-        <datalist id="priorityList">
-            <option value="low"></option>"
-            <option value="medium"></option>"
-            <option value="high"></option>"
-        </datalist>
-        <input type="date" id="task-date">
-        <button type="submit">Add task</button>
-    </form>
+    <selection>
+        <div class="container" id="main-content"> </div>
+        <ul class="todos"></ul>
+    </selection>
 
-    <ul class="stats" id="weekdays">
-        <li>
-            <span>Remaining</span>
-            <span id="remaining-task">0</span>
-        </li>
-        <li>
-            <span>Completed</span>
-            <span id="completed-task">0</span>
-        </li>
-        <li>
-            <span>Total</span>
-            <span id="total-task">0</span>
-        </li>
-    </ul>
-</div>
-<selection>
-    <div class="container" id="main-content"></div>
-    <ul class="todos">
+    <script src="todoScript.js"></script>
+    <script src="./drink_counter/drinkcounter_jquery.js"></script>
+    <script src="./drink_counter/drinkcounter.js"></script>
 
-    </ul>
-<<<<<<< HEAD
-=======
-
->>>>>>> master
-</selection>
-
-<script src="todoScript.js"></script>
-<script src="./drink_counter/drinkcounter_jquery.js"></script>
-<script src="./drink_counter/drinkcounter.js"></script>
 </body>
 </html>
