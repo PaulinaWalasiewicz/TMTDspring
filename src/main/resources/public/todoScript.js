@@ -137,19 +137,10 @@ function postTask(idUser, _title, _priority, _dueDate) {
         category: {
             content: "categoryContent"
         },
-        priority: "low"
+        priority: _priority
     };
-    console.log("postTask(): ---Priority "+newTask.priority)
-    let priorityId = 11952
-    if(_priority === "medium"){
-        priorityId = 11953;
-    }
-    if(_priority === "high"){
-        priorityId = 11954;
-    }
-    // console.log("priorityId: " + priorityId)
 
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?description_id=4304&category_id=2052`, {
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&category_id=2052`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -170,7 +161,7 @@ function postTask(idUser, _title, _priority, _dueDate) {
         .catch(error => {
             console.log("postTask(): Problem")
         });
-    console.log("How do new task look: "+ newTask.priority +" string "+ JSON.stringify(newTask))
+    console.log("How do new task look: string "+ JSON.stringify(newTask))
     tasks.push(newTask);
     countTasks();
 
@@ -275,9 +266,7 @@ todoForm.addEventListener('submit', (e)=>{
 
     const inputValue_title = titleInput.value;
     const inputValue_priority = priorityInput.value;
-    console.log("Priority: " + inputValue_priority);
     const inputValue_dueDate = dueDateInput.value + " 12:00";
-    console.log("DueDate: " + inputValue_dueDate);
 
 
     if(inputValue_title == " "){
@@ -325,7 +314,6 @@ todoList.addEventListener("click", (e) => {
 todoList.addEventListener('keydown', (e) => {
     if(e.keyCode ==13){
         e.preventDefault();
-        console.log("Clicking on task : ")
         e.target.blur()
     }
 })
@@ -343,7 +331,6 @@ function createTask(task){
         taskEl.classList.add('complete');
     }
 
-    console.log("createTask(): "+ JSON.stringify(task));
 
     const taskElMarkup =
     `<div >
@@ -405,9 +392,9 @@ function updateTask(taskId, el){
             span.setAttribute('contenteditable', 'true')
             parent.classList.remove('complete')
         }
-        console.log("updateTask(): dueDate: "+ task.dueDate);
-        console.log("updateTask(): Priority: "+ task.priority);
-        console.log("updateTask(): " + JSON.stringify(task));
+        // console.log("updateTask(): dueDate: "+ task.dueDate);
+        // console.log("updateTask(): Priority: "+ task.priority);
+        // console.log("updateTask(): " + JSON.stringify(task));
         putTask(taskId, task.title, task.completed, task.priority)
         countTasks();
     }
