@@ -5,7 +5,6 @@ import com.tmtd.tmtdspring.Repository.TaskRepository;
 import com.tmtd.tmtdspring.Repository.CategoryRepository;
 import com.tmtd.tmtdspring.Repository.DescriptionRepository;
 import com.tmtd.tmtdspring.Repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +48,11 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
     @PostMapping("/users/{user_id}/tasks")
-    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) String priority, @RequestParam(required = false) long category_id, @RequestBody Task taskRequest) {
+    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) long category_id, @RequestBody Task taskRequest) {
 
         Optional<Task> task = userRepository.findById(user_id).map(user-> {
             taskRequest.setUser(user);
             taskRequest.setDescription(descriptionRepository.findById(description_id).get());
-            taskRequest.setPriority(priority);
             taskRequest.setCategory(categoryRepository.findById(category_id).get());
             return taskRepository.save(taskRequest);
         });
@@ -70,6 +68,7 @@ public class TaskController {
             task.get().setTitle(taskRequest.getTitle());
             task.get().setDueDate(taskRequest.getDueDate());
             task.get().setCompleted(taskRequest.isCompleted());
+            task.get().setPriority(taskRequest.getPriority());
             return new ResponseEntity<>(taskRepository.save(task.get()),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

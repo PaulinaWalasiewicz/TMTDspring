@@ -37,14 +37,14 @@ public class Task {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
+
     @ManyToOne(fetch=FetchType.LAZY,optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
-    @JoinColumn(name = "priority_id")
+    @Column(name = "priority", nullable = false)
     private String priority;
 
     public Task(String title,
@@ -131,6 +131,21 @@ public class Task {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "Task {" +
+                "id=" + id +
+                ", user=" + user.getId() +
+                ", title='" + title  +
+                ", description=" + description.getId() +
+                ", dueDate=" + dueDate +
+                ", completed=" + completed +
+                ", category=" + category.getId() +
+                ", priority=" + priority +
+                '}';
+
     }
 }
 

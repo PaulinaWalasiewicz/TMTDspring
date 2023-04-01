@@ -84,6 +84,7 @@ let allDrinks = [
         limit: 0
     }];
 let today;
+let todaysDate;
 
 flatpickr("input[type=datetime-local]", {enableTime: true,
                                          dateFormat: "Y-m-d H:i",});
@@ -112,8 +113,8 @@ function fetchDescription() {
 
 }
 
-function fetchDrinks(type_id, unit_id, date) {
-    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id+'&drink_date='+date)
+function fetchDrinks(type_id, unit_id, date, limit) {
+    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
@@ -122,21 +123,21 @@ function fetchDrinks(type_id, unit_id, date) {
             let newValue = 0;
             let newLimit = 0;
             for (const val of drinks) {
-                val.type = drinkType.type
-                val.unit = drinkUnit.unit
-                newValue += val.count;
-                newLimit = val.limit;
+                if (val.drink_date == today) {
+                    newValue += val.count;
+                }
             }
 
             for (const val of allDrinks) {
-                let newValue = 0;
-                if (val.type == drinkType && val.unit == drinkUnit) {
-                   val.count = newValue
-                    val.limit = newLimit
+                //let newValue = 0;
+                if (val.type == drinkType.type && val.unit == drinkUnit.unit) {
+                    val.count = newValue
+                    //val.limit = limit
                 }
             }
             //localStorage.setItem(drinkType.type, newValue + " " + drinkUnit.unit);
-            // console.log(drinkType.type);
+
+            console.log(drinkType);
             load();
         });
 
@@ -154,16 +155,20 @@ function fetchAllDrinks() {
                     let newValue = 0;
                     let newLimit = 0;
                     for (const val of drinks2) {
-                        // console.log(val.unit.unit)
-                        if (val.drinkType.type == type.type && val.unit.unit == unit.unit) {
-                            // console.log(val.count)
-                            newValue += val.count;
-                            newLimit = val.limit
-                            for (const val2 of allDrinks) {
-                                if (val2.type == type.type && val2.unit == unit.unit) {
-                                    val2.count = newValue
-                                    val2.limit = newLimit
-                                    // console.log(newValue)
+
+                        if (val.drink_date == today) {
+                            console.log(val.unit.unit)
+                            if (val.drinkType.type == type.type && val.unit.unit == unit.unit) {
+                                console.log(val.count)
+                                newValue += val.count;
+                                newLimit = val.limit
+                                for (const val2 of allDrinks) {
+                                    if (val2.type == type.type && val2.unit == unit.unit) {
+                                        val2.count = newValue
+                                        val2.limit = newLimit
+                                        console.log(newValue)
+                                    }
+
                                 }
                             }
                         }
@@ -346,6 +351,9 @@ function load(){
 
     today = year + "-" + formattedMonth + "-" + formattedDay
 
+    console.log(today)
+    todaysDate = new Date(year, month, day);
+    console.log(todaysDate.toLocaleDateString())
     const firstDayOfMonth = new Date(year, month, 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate(); //get last day in current month (for nb if days)
 
@@ -501,13 +509,13 @@ function saveDrink() {
             "unit": {
                 "unit": "gfdsa"
             },
-            "drink_date": today
+            "drink_date": today.toString()
         };
 
         // console.log(eventDescription.value);
         // console.log(today)
 
-        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value + '&drink_date=' + today, {
+        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -516,9 +524,20 @@ function saveDrink() {
         })
             .then(res => res.json())
             .then(data => {
-                // console.log(data)
-                // console.log(data.type)
-                fetchDrinks(drinkTypeInput.value, drinkUnitInput.value);
+
+                console.log(data)
+                console.log(data.type)
+                let drinkType = drinkTypes.find(t => t.id == drinkTypeInput.value)
+                let drinkUnit = drinkUnits.find(u => u.id == drinkUnitInput.value);
+
+                for (const val of allDrinks) {
+                    //let newValue = 0;
+                    if (val.type == drinkType.type && val.unit == drinkUnit.unit) {
+                        val.limit = drinkLimitInput.value
+                        console.log("yes")
+                    }
+                }
+                fetchDrinks(drinkTypeInput.value, drinkUnitInput.value, today, drinkLimitInput.value);
             })
             .catch(err => {
                 console.error(err);

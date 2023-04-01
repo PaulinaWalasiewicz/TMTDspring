@@ -6,8 +6,8 @@
 a, li, ul {
     text-decoration: none;
 }
-#logo
-{
+
+#logo {
     padding-left: 2px;
     float: left;
     height: 60px;
@@ -20,7 +20,6 @@ a, li, ul {
 body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
-    justify-content: center;
     width: 880px;
     margin:50px auto 30px auto;
 }
@@ -31,10 +30,6 @@ body {
 
 #header h1 {
     width: fit-content;
-}
-#header .css-title {
-    margin: 0 auto;
-    display:block;
 }
 
 #container {
@@ -87,17 +82,21 @@ body {
     padding: 10px;
     flex-grow: 1;
     margin-right: 10px;
-    border: 1px solid #206e8c;
-    border: none;
-    outline: none;
-    box-shadow: 0px 0px 2px gray;
 }
 
 #todo-form #task-name{
     width: 60%;
 }
-
+input .form-task {
+    margin-left: 10px;
+    margin-right: 20px;
+    border: 1px solid #206e8c;
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 2px gray;
+}
 #todo-form button {
+    margin-left: 10px;
     padding: 10px;
     color: #206E8C;
     font-family: sans-serif;
@@ -143,19 +142,22 @@ body {
 
 }
 
-.remove-task {
-    display: inline-block;
-    background-color: #206e8c;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 15px;
-    border: none;
-    outline: none;
-    box-shadow: 0px 0px 2px gray;
-    width: 75px;
-}
+/*.remove-task {*/
+/*    display:inline;*/
+/*    align-items: center;*/
+/*    background-color: #FFE7E7;*/
+/*    background-position: 0 0;*/
+/*    border-radius: 11px;*/
+/*    border: 2px solid #FEE0E0;*/
+/*    box-sizing: border-box;*/
+/*    color: #D33A2C;*/
+/*    cursor: default;*/
+/*    width:fit-content;*/
+/*    height: 30px;*/
+/*    padding: 2px 12px;*/
+/*    text-align: center;*/
+/*    word-break: break-word;*/
+/*}*/
 
 .todos li input[type=checkbox]{
     width: 20px;
@@ -173,7 +175,6 @@ body {
     margin-right: 40px;
     text-decoration: none;
     color: white;
-    font-weight: semi-bold;
     outline: none;
     border: none;
     box-shadow: 0px 0px 3px gray;
@@ -236,7 +237,7 @@ body {
 }
 
 #buttons {
-    position: relative;
+    position: center;
 }
 
 #buttons button {

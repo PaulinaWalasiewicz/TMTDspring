@@ -53,7 +53,7 @@ public class DrinkController {
     }
 
     @GetMapping("/users/{user_id}/drink")
-    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id, @RequestParam(required = true) String drink_date) {
+    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id) {
 
         if (!userRepository.existsById(user_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,9 +65,8 @@ public class DrinkController {
 
         List<Drink> drinks2 = drinks.stream().filter(drink -> drink.getDrinkType() == drinkType).toList();
         List<Drink> drinks3 = drinks2.stream().filter(drink -> drink.getUnit() == unit).toList();
-        List<Drink> drinks4 = drinks3.stream().filter(drink -> drink.getDrink_date().toString() == drink_date).toList();
 
-        return new ResponseEntity<>(drinks4, HttpStatus.OK);
+        return new ResponseEntity<>(drinks3, HttpStatus.OK);
     }
     @GetMapping("/drink/{id}")
     public ResponseEntity<Drink> getDrink(@PathVariable("id") long id){
