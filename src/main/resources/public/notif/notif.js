@@ -46,42 +46,21 @@ function callNotif(msg){
 }
 
 //-----------FUNCTIONS FOR EVENTS
-let eventsforNotif = [];
-function fetchEventss() {
-    fetch('http://localhost:8080/api/users/404/events')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            eventsforNotif = data;
-            console.log(eventsforNotif)
-        });
-
-}
-
 
 function checkForUpcomingEvents() {
     console.log('start')
-    // debugger;
+     // debugger;
     // Call the REST endpoint to get the upcoming event(s)
-    fetchEventss();
-    console.log("ddd")
-    // If there is an upcoming event, show a notification
-    for (const e of eventsforNotif){
-        console.log("ddd")
-        const  st = new Date(e.startTime);
-        const current = Date.now();
-        console.log(st);
-        console.log(current)
-        var diff = Math.abs(date1 - date2)/60000;
-        if (diff<=30){
-            const message = `Upcoming event: ${e.title}`;
-            console.log(message);
-            callNotif(message);
-        }
+    fetch('http://localhost:8080/api/upcomingevents')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => {
+            evetnsMeggages = data;
+            console.log(data)
+            for (const e of data){
+                callNotif(e);
 
-    }
-
+            }
+        });
 
 }
-
-// Check for upcoming events every 5 minutes
-// setInterval(checkForUpcomingEvents, 5 * 60 * 1000);
+setInterval(checkForUpcomingEvents, 15 * 60 * 1000);

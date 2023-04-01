@@ -455,7 +455,6 @@ function saveEvent() {
                 content: "dfghj"
             }
         };
-        callNotif("Upcoming event: "+eventTitleInput.value)
         // console.log(eventDescription.value);
 
 
