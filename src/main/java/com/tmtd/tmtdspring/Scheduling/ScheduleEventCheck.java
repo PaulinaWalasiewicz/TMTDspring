@@ -29,8 +29,9 @@ public class ScheduleEventCheck  {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     //schedule rate in which this function repeats itself
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 600000)
     // 5000 = 5 sec
+    // 600000 = 10 minutes
     public  void  reportCurrentTime(){
         System.out.println("The time is now " + dateFormat.format(new Date()));
         Long id = Long.valueOf(404);
@@ -65,7 +66,7 @@ public class ScheduleEventCheck  {
 
         if(filtred.size()>0){
             LocalTime timeNow = LocalTime.now();
-            //Search for events that are in 30 minutes or less
+            //Search for events that are in 60 minutes or less
             for(Event e:filtred){
                 Duration duration = Duration.between(timeNow,e.getStartTime().toLocalTime());
                 System.out.println("duration is:" + duration.toMinutes());
