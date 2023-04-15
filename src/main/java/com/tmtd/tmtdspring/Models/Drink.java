@@ -16,7 +16,7 @@ public class Drink {
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.TABLE)
     private Long id;
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @ManyToOne(fetch=FetchType.EAGER,optional = false)
     @JoinColumn(name="user_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore

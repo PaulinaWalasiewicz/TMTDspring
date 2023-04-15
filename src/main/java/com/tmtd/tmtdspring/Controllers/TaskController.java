@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,23 @@ public class TaskController {
 
         List<Task> tasks = taskRepository.findByUserId(user_id);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+    //Returnes tasks from time frame
+    @GetMapping("/users/{user_id}/tasks/{date1}/{date2}")
+    public ResponseEntity<List<Task>> getTasksFromTimeFrame(@PathVariable(value = "user_id") Long user_id, @PathVariable(value = "date1") LocalDate date1, @PathVariable(value = "date2") LocalDate date2) {
+
+        if (!userRepository.existsById(user_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Task> tasks = taskRepository.findByUserId(user_id);
+        List<Task> filtered = tasks.stream()
+                .filter(t-> t.getDueDate() != null && t.getDueDate().toLocalDate().isBefore(date2) && t.getDueDate().toLocalDate().isAfter(date1))
+                .toList();
+
+
+
+        return new ResponseEntity<>(filtered, HttpStatus.OK);
     }
     @PostMapping("/users/{user_id}/tasks")
     public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) long category_id, @RequestBody Task taskRequest) {

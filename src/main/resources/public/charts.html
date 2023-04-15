@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <meta charset="UTF-8">
+        <title>TMTD - Too Mutch Too Do</title>
+        <meta name="viewport" content="width=device-width" ,initial-scale="1.0">
+        <link rel="stylesheet" href="style.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                font-family: sans-serif;
+            }
+            h2{
+                color: #206E8C;
+                text-align: center;
+            }
+            .chartCard {
+                /*width: 50vw;*/
+                /*height: calc(100vh - 40px);*/
+                /*background: rgba(54, 162, 235, 0.2);*/
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .chartBox {
+                width: 300px;
+                padding: 5px;
+                border-radius: 20px;
+                border: solid 3px rgba(54, 162, 235, 1);
+                background: white;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="container">
+        <ul>
+            <li><img id="logo" src="/logo.png" alt="LOGO"></li>
+            <li><a href="index.html">Month</a></li>
+            <li><a href="week.html">Week</a></li>
+            <li><a href="todo.html">ToDo</a></li>
+            <li><a href="/ChartServlet">My charts</a></li>
+        </ul>
+        <br>
+        <h2>Your drink analysis</h2><br>
+        <div class="chartCard">
+            <div class="chartBox">
+                <canvas id="DrinkWeek"></canvas>
+            </div>
+            <div class="chartBox">
+                <canvas id="DrinkMonth"></canvas>
+            </div>
+        </div>
+        <br>
+        <h2>Your task analysis</h2><br>
+        <div class="chartCard">
+            <div class="chartBox">
+                <canvas id="TaskWeek"></canvas>
+            </div>
+            <div class="chartBox">
+                <canvas id="TaskMonth"></canvas>
+            </div>
+        </div>
+
+
+    </div>
+
+
+        <script src="analysis/chart.js"></script>
+    </body>
+</html>

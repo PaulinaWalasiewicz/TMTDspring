@@ -1,4 +1,5 @@
 package com.tmtd.tmtdspring.Controllers;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,21 @@ public class DrinkController {
 
         List<Drink> drinks = drinkRepository.findByUserId(user_id);
         return new ResponseEntity<>(drinks, HttpStatus.OK);
+    }
+    //Get user drinks for time frame
+    @GetMapping("/users/{user_id}/drinks/{date1}/{date2}")
+    public ResponseEntity<List<Drink>> getUsersDrinksFromTime(@PathVariable(value = "user_id") Long user_id, @PathVariable(value = "date1") LocalDate date1, @PathVariable(value = "date2") LocalDate date2) {
+
+        if (!userRepository.existsById(user_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Drink> drinks = drinkRepository.findByUserId(user_id);
+        List<Drink> filtered = drinks.stream()
+                .filter(d-> d.getDrink_date() != null && d.getDrink_date().isAfter(date1) && d.getDrink_date().isBefore(date2) )
+                .toList();
+
+        return new ResponseEntity<>(filtered, HttpStatus.OK);
     }
 
     @GetMapping("/users/{user_id}/drink")
