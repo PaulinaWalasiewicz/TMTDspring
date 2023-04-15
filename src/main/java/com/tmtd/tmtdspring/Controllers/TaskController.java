@@ -48,7 +48,7 @@ public class TaskController {
         List<Task> tasks = taskRepository.findByUserId(user_id);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
-    //Returnes tasks for from time frame
+    //Returnes tasks from time frame
     @GetMapping("/users/{user_id}/tasks/{date1}/{date2}")
     public ResponseEntity<List<Task>> getTasksFromTimeFrame(@PathVariable(value = "user_id") Long user_id, @PathVariable(value = "date1") LocalDate date1, @PathVariable(value = "date2") LocalDate date2) {
 

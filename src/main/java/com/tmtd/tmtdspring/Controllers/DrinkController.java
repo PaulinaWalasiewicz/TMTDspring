@@ -64,6 +64,7 @@ public class DrinkController {
         List<Drink> filtered = drinks.stream()
                 .filter(d-> d.getDrink_date() != null && d.getDrink_date().isAfter(date1) && d.getDrink_date().isBefore(date2) )
                 .toList();
+
         return new ResponseEntity<>(filtered, HttpStatus.OK);
     }
 

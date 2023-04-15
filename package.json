@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "chart.js": "^4.2.1",
     "vue-spring-calendar": "^0.2.4"
   }
 }
