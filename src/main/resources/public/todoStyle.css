@@ -283,7 +283,7 @@ body {
     color: red;
 }
 
-.sort-duedate {
+.sort-section {
     padding: 5px;
     margin-top: 5px;
     background: #b4b0b0;
@@ -293,6 +293,10 @@ body {
     border-radius: 3px;
 }
 
-.sort-duedate:hover {
+.sort-section:hover {
     background: #9e9b9b;
+}
+.sort-section:active,
+.sort-section:focus {
+    background-color: #d36c6c;
 }

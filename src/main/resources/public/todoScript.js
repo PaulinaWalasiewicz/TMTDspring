@@ -157,6 +157,10 @@ const priorityInput = document.querySelector('#task-priority');
 const dueDateInput = document.querySelector('#task-date');
 const deleteAllBtn = document.querySelector('#delete-todo');
 const sortDueDateBtn = document.querySelector("#sort-by-duedate");
+const sortLowBtn = document.querySelector("#sort-by-low");
+const sortMediumBtn = document.querySelector("#sort-by-medium");
+const sortHighBtn = document.querySelector("#sort-by-high");
+let isSorted = false;
 
 todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -219,14 +223,72 @@ todoList.addEventListener("input", (e) => {
 })
 
 sortDueDateBtn.addEventListener("click", (e) => {
-    removeTasksHTML();
-    console.log("addEventListener: sortDueDateBtn");
-    tasks_ls.sort(sortByDueDate);
-    tasks_ls.forEach(function (task) {
-        console.log("[]: " + task.id);
-        createTask(task);
-    });
-    console.log(tasks_ls);
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks();
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortDueDateBtn");
+        tasks_ls.sort(sortByDueDate);
+        tasks_ls.forEach(function (task) {
+            console.log("[]: " + task.id);
+            createTask(task);
+        });
+        console.log("DueDate sort" + tasks_ls);
+        isSorted = true;
+    }
+});
+
+sortLowBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks();
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortLowBtn");
+        tasks_ls = sortTasksByPriority(tasks_ls, "low");
+        tasks_ls.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("Low sort" + tasks_ls);
+        isSorted = true;
+    }
+});
+
+sortMediumBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks();
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortMediumBtn");
+        tasks_ls = sortTasksByPriority(tasks_ls, "medium");
+        tasks_ls.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("Medium sort" + tasks_ls);
+        isSorted = true;
+    }
+});
+
+sortHighBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks();
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortHighBtn");
+        tasks_ls = sortTasksByPriority(tasks_ls, "high");
+        tasks_ls.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("High sort" + tasks_ls);
+        isSorted = true;
+    }
 });
 
 function createTask(task){
@@ -270,6 +332,7 @@ function countTasks(){
     completedTask.textContent = completedTasksArray.length
     remainingTask.textContent = tasks_ls.length - completedTasksArray.length
 }
+
 function removeTask(taskId){
     console.log("removeTask(): " + taskId);
     tasks = tasks_ls.filter((task) => task.id !== parseInt(taskId));
@@ -277,6 +340,7 @@ function removeTask(taskId){
     document.getElementById(taskId).remove();
     countTasks();
 }
+
 function removeTasksHTML() {
     console.log("removeTasksHTML(): ");
     tasks_ls.forEach(function (task) {
@@ -323,4 +387,10 @@ function sortByDueDate(taskA, taskB) {
     } else {
         return 0;
     }
+}
+
+function sortTasksByPriority(tasks, priorityLevel) {
+    tasks.sort((a, b) => a.priority - b.priority);
+    const filteredTasks = tasks.filter((task) => task.priority === priorityLevel);
+    return filteredTasks;
 }
