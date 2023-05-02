@@ -15,11 +15,9 @@
             <li><a href="week.html">Week</a></li>
             <li><a href="todo.html">ToDo</a></li>
             <li><a href="charts.html" > My charts</a></li>
-
         </ul>
     </div>
     <div id="header">
-
         <div id="pomodoro-app">
             <div id="container2">
                 <div id="timer">
@@ -57,7 +55,7 @@
                 <option value="high"></option>"
             </datalist>
             <input type="date" id="task-date">
-            <button type="submit">Add task</button>
+            <button id="add-task-btn" type="submit">+</button>
         </form>
 
         <ul class="stats" id="weekdays">
@@ -73,6 +71,9 @@
                 <span>Total</span>
                 <span id="total-task">0</span>
             </li>
+        </ul>
+        <ul>
+            <button class="sort-duedate" id="sort-by-duedate">Sort by due-date</button>
         </ul>
     </div>
 

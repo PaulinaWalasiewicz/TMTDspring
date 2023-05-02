@@ -1,5 +1,5 @@
-let tasks = [];
 let users = [];
+var tasks_ls;
 let items = [];
 var idUser = '404';
 
@@ -87,167 +87,64 @@ var pomodoro = {
 };
 window.onload = function(){
     pomodoro.init();
+    getTasks();
 };
 
-function getTasks(idUser) {
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks`)
-        .then(res => {
-            if(!res.ok){
-                console.log("getTasks(): Problem");
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            tasks = data;
-            console.log("getTasks(): " + data)
-            if(tasks && tasks.length > 0){
-                console.log("getTasks(): Loaded tasks to array");
-                tasks.map((task) => {
-                    console.log("Task: " + task.priority);
-                    createTask(task);
-                })
-                countTasks();
-            }
-            else{
-                console.log("getTasks(): No Tasks found");
-            }
-        })
-        .catch(error => {
-            console.log("getTasks(): error " + tasks.length)
-        });
+
+function generateId() {
+    const timestamp = Date.now();
+    const randomNum = Math.random();
+    return `${timestamp}-${randomNum}`;
 }
-getTasks(idUser);
-
-function postTask(idUser, _title, _priority, _dueDate) {
-    const newTask = {
-        title: _title,
-        description: {
-            content: "descriptionContent"
-        },
-        startTime: _dueDate,
-        completed: false,
-        user: {
-            username: "admin",
-            password: "admin",
-            email: "email@adnim",
-            firstName: "Adam",
-            lastName: "Kowalski"
-        },
-        category: {
-            content: "categoryContent"
-        },
-        priority: _priority
-    };
-
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=4304&category_id=2052`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newTask)
-    })
-        .then(res => {
-            if(!res.ok){
-                console.log("postTask(): Problem with fetch");
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            countTasks();
-            console.log("postTask(): Success " + data.toString())
-        })
-        .catch(error => {
-            console.log("postTask(): Problem")
-        });
-    console.log("How do new task look: string "+ JSON.stringify(newTask))
-    tasks.push(newTask);
-    countTasks();
-
+function getTasks() {
+    tasks_ls = JSON.parse(localStorage.getItem("tasks_ls")) || [];
+    console.log("getTasks(): " + tasks_ls.length);
+    tasks_ls.forEach(function (task) {
+        console.log("[]: " + task.id);
+        createTask(task);
+    });
 }
 
-function putTask(taskId, _title, _completed, _priority) {
+function putTask(_taskId, _title, _completed, _priority,_dueDate) {
+    console.log("putTask(): taskId: " + _taskId);
     const putTask = {
+        id: _taskId,
         title: _title,
         description: {
-            content: "descriptionContent"
+            content: "descriptionContent",
         },
-        dueDate: '2016-03-04 11:08',
+        dueDate: _dueDate,
         completed: _completed,
         user: {
             username: "admin",
             password: "admin",
             email: "email@adnim",
             firstName: "Adam",
-            lastName: "Kowalski"
+            lastName: "Kowalski",
         },
         category: {
-            content: "categoryContent"
+            content: "categoryContent",
         },
-        priority: _priority
+        priority: _priority,
     };
-    console.log("putTask(): ---Priority"+putTask.priority +" string " + JSON.stringify(putTask) )
+    const taskIndex = tasks_ls.findIndex((task) => task.id === _taskId);
+    if (taskIndex !== -1) {
+        tasks_ls[taskIndex] = putTask;
+    }
 
-    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=4304&category_id=2052`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(putTask)
-    })
-        .then(res => {
-            if(!res.ok){
-                console.log("putTask(): Problem with fetch");
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log("putTask(): Success")
-            countTasks();
-        })
-        .catch(error => {
-            console.log("putTask(): Problem")
-        });
-}
-
-function deleteTasks(idUser) {
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks`, {
-        method: 'DELETE'
-    })
-        .then(res => {
-            if(!res.ok){
-                console.log("deleteTasks(): Problem with fetch");
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log("deleteTasks(): Success   delete all User's task ")
-        })
-        .catch(error => {
-            console.log("deleteTasks(): Problem")
-        });
+    localStorage.setItem("tasks_ls", JSON.stringify(tasks_ls));
 }
 
 function deleteTask(idTask) {
-    fetch(`http://localhost:8080/api/tasks/${idTask}`, {
-        method: 'DELETE'
-    })
-        .then(res => {
-            if(!res.ok){
-                console.log("deleteTask(): Problem with fetch");
-                return;
-            }
-            return;
-        })
-        .then(data => {
-            console.log("deleteTask(): Success delete task")
-        })
-        .catch(error => {
-            console.log("deleteTask(): Problem")
-        });
+    let tasks_ls = JSON.parse(localStorage.getItem("tasks_ls"));
+    const taskIndex = tasks_ls.findIndex((task) => task.id === idTask);
+    if (taskIndex !== -1) {
+        tasks_ls.splice(taskIndex, 1);
+    }
+    console.log("deleteTask(): " + taskIndex);
+    localStorage.removeItem(taskIndex);
+    localStorage.setItem("tasks_ls", JSON.stringify(tasks_ls));
+    console.log("deleteTask(): " + tasks_ls.length);
 }
 
 const todoForm = document.querySelector('#todo-form');
@@ -259,7 +156,7 @@ const titleInput = document.querySelector('#task-name');
 const priorityInput = document.querySelector('#task-priority');
 const dueDateInput = document.querySelector('#task-date');
 const deleteAllBtn = document.querySelector('#delete-todo');
-
+const sortDueDateBtn = document.querySelector("#sort-by-duedate");
 
 todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -273,6 +170,7 @@ todoForm.addEventListener('submit', (e)=>{
         return
     }
     const newTask = {
+        id: generateId(),
         title: inputValue_title,
         description: {
             content: "descriptionContent"
@@ -291,11 +189,8 @@ todoForm.addEventListener('submit', (e)=>{
         },
         priority: inputValue_priority
     };
-    // console.log("---Priority"+ newTask.priority)
-    console.log("New task: " + newTask.title, newTask.completed, newTask.priority)
-    postTask(idUser, inputValue_title, inputValue_priority, inputValue_dueDate);
-    // getTasks(idUser);
-    createTask(newTask);
+    tasks_ls.push(newTask);
+    localStorage.setItem("tasks_ls", JSON.stringify(tasks_ls));    createTask(newTask);
 
     todoForm.reset();
     titleInput.focus();
@@ -322,6 +217,17 @@ todoList.addEventListener("input", (e) => {
     const taskId = e.target.closest('li').id;
     updateTask(taskId, e.target)
 })
+
+sortDueDateBtn.addEventListener("click", (e) => {
+    removeTasksHTML();
+    console.log("addEventListener: sortDueDateBtn");
+    tasks_ls.sort(sortByDueDate);
+    tasks_ls.forEach(function (task) {
+        console.log("[]: " + task.id);
+        createTask(task);
+    });
+    console.log(tasks_ls);
+});
 
 function createTask(task){
     const taskEl = document.createElement('li');
@@ -354,27 +260,33 @@ function createTask(task){
 function countTasks(){
     const completedTasksArray = []
 
-    for (let i=0; i < tasks.length; i++){
-        const task = tasks[i];
-        if(task.completed) {
+    for (let i=0; i < tasks_ls.length; i++){
+        const task = tasks_ls[i];
+        if(tasks_ls.completed) {
             completedTasksArray.push(task)
         }
     }
-    totalTask.textContent = tasks.length
+    totalTask.textContent = tasks_ls.length
     completedTask.textContent = completedTasksArray.length
-    remainingTask.textContent = tasks.length - completedTasksArray.length
+    remainingTask.textContent = tasks_ls.length - completedTasksArray.length
 }
 function removeTask(taskId){
-    tasks = tasks.filter((task) =>
-        task.id !== parseInt(taskId)
-    )
+    console.log("removeTask(): " + taskId);
+    tasks = tasks_ls.filter((task) => task.id !== parseInt(taskId));
     deleteTask(taskId);
-    console.log("removeTask(): Clicked to remove: "+ taskId);
     document.getElementById(taskId).remove();
     countTasks();
 }
+function removeTasksHTML() {
+    console.log("removeTasksHTML(): ");
+    tasks_ls.forEach(function (task) {
+        console.log("removeTasksHTML(): " + task.id);
+        document.getElementById(task.id).remove();
+    });
+}
 
 function updateTask(taskId, el){
+    console.log("updateTask(): ", taskId);
     const task = tasks.find((task) => task.id == parseInt(taskId))
 
     if(el.hasAttribute('contenteditable')){
@@ -395,7 +307,20 @@ function updateTask(taskId, el){
         // console.log("updateTask(): dueDate: "+ task.dueDate);
         // console.log("updateTask(): Priority: "+ task.priority);
         // console.log("updateTask(): " + JSON.stringify(task));
-        putTask(taskId, task.title, task.completed, task.priority)
+        putTask(task.id, task.title, task.completed, task.priority, task.dueDate)
         countTasks();
+    }
+}
+
+function sortByDueDate(taskA, taskB) {
+    const dueDateA = new Date(taskA.dueDate);
+    const dueDateB = new Date(taskB.dueDate);
+
+    if (dueDateA < dueDateB) {
+        return -1;
+    } else if (dueDateA > dueDateB) {
+        return 1;
+    } else {
+        return 0;
     }
 }

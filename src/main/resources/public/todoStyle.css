@@ -79,19 +79,18 @@ body {
 }
 
 #task-name {
-    padding: 10px;
     flex-grow: 1;
-    margin-right: 10px;
 }
 
 #todo-form #task-name{
     width: 60%;
 }
-input .form-task {
-    margin-left: 10px;
-    margin-right: 20px;
-    border: 1px solid #206e8c;
+.form-task input {
+    padding: 5px;
+    margin-left: 5px;
+    height: 30px;
     border: none;
+    height: 50px;
     outline: none;
     box-shadow: 0px 0px 2px gray;
 }
@@ -108,7 +107,6 @@ input .form-task {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-
 }
 
 .stats li {
@@ -263,4 +261,38 @@ input .form-task {
 
 #buttons button#stop{
     background : #d36c6c;
+}
+#add-task-btn {
+    font-size: 60px;
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+    color: white !important;
+    background: rgb(106, 197, 167);
+    border-radius: 500rem;
+    border: 0px;
+}
+#add-task-btn:hover {
+    background: rgb(90, 167, 141);
+}
+
+#task-date {
+    color: red;
+}
+
+.sort-duedate {
+    padding: 5px;
+    margin-top: 5px;
+    background: #b4b0b0;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.sort-duedate:hover {
+    background: #9e9b9b;
 }
