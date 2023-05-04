@@ -32,7 +32,7 @@ flatpickr("input[type=datetime-local]", {enableTime: true,
     dateFormat: "Y-m-d H:i",});
 
 function fetchEvents() {
-    fetch('http://localhost:8080/api/users/404/events')
+    fetch('http://localhost:8080/api/users/2/events')
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             events = data;
@@ -56,7 +56,7 @@ function fetchDescription() {
 }
 
 function fetchDrinks(type_id, unit_id) {
-    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
+    fetch('http://localhost:8080/api/users/2/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
@@ -435,7 +435,7 @@ function saveDrink() {
 
         console.log(eventDescription.value);
 
-        fetch('http://localhost:8080/api/users/404/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
+        fetch('http://localhost:8080/api/users/2/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
