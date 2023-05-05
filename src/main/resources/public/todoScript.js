@@ -468,13 +468,21 @@ function updateTask(taskId, el){
         const parent = el.closest('li');
 
         task.completed = !task.completed;
-
         if(task.completed) {
             span.removeAttribute('contenteditable')
             parent.classList.add('complete')
+            span.style.textDecoration = 'line-through';
+            parent.style.color = '#333'
+            parent.style.opacity = '0.5'
+            parent.style.background = '#f2f2f2f2 0.5'
+
         } else {
             span.setAttribute('contenteditable', 'true')
             parent.classList.remove('complete')
+            span.style.textDecoration = 'none';
+            parent.style.color = 'black'
+            parent.style.opacity = '1'
+            parent.style.background = 'white'
         }
         putTask(taskId, task.title, task.completed, task.priority, task.dueDate)
         countTasks();
