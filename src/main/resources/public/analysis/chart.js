@@ -6,16 +6,21 @@ fetch('http://localhost:8080/api/analysisData/DrinkWeek')
         var drinkData = {};
         console.log(data)
 
-
+        debugger;
         data.body.forEach(drink => {
-            if (drink.drinkType.type in drinkData) {
-                drinkData[drink.drinkType.type]+= parseInt(drink.count);
+            if (drink.drink_type in drinkData) {
+                drinkData[drink.drink_type]+= parseInt(drink.count);
             } else {
-                drinkData[drink.drinkType.type] = parseInt(drink.count);
+                drinkData[drink.drink_type] = parseInt(drink.count);
             }
         });
-        const drinkLabels = Object.keys(drinkData);
-        const drinkCounts = Object.values(drinkData);
+        // Convert object properties into an array of key-value pairs
+        var sortedArray = Object.entries(drinkData).sort();
+
+        // Create a new object from the sorted array
+        var sortedObject = Object.fromEntries(sortedArray);
+        const drinkLabels = Object.keys(sortedObject);
+        const drinkCounts = Object.values(sortedObject);
         var title = "Drinks you drank this week: "
         createChart(drinkLabels, drinkCounts,title,"DrinkWeek");
     });
@@ -26,16 +31,21 @@ fetch('http://localhost:8080/api/analysisData/DrinkMonth')
     .then(data2 => {
         var drinkdata2 = {};
         console.log(data2)
-        debugger;
         data2.body.forEach(drink => {
-            if (drink.drinkType.type in drinkdata2) {
-                drinkdata2[drink.drinkType.type]+= parseInt(drink.count);
+            if (drink.drink_type in drinkdata2) {
+                drinkdata2[drink.drink_type]+= parseInt(drink.count);
             } else {
-                drinkdata2[drink.drinkType.type] = parseInt(drink.count);
+                drinkdata2[drink.drink_type] = parseInt(drink.count);
             }
         });
-        const drinkLabels2 = Object.keys(drinkdata2);
-        const drinkCounts2 = Object.values(drinkdata2);
+        // Convert object properties into an array of key-value pairs
+        var sortedArray = Object.entries(drinkdata2).sort();
+
+        // Create a new object from the sorted array
+        var sortedObject = Object.fromEntries(sortedArray);
+
+        const drinkLabels2 = Object.keys(sortedObject);
+        const drinkCounts2 = Object.values(sortedObject);
         const title = 'Drinks you drank this month: ';
         createChart(drinkLabels2, drinkCounts2,title,"DrinkMonth");
     });
@@ -46,8 +56,8 @@ function createChart(labels, data2,title,chartID) {
         datasets: [{
             label: title,
             data: data2,
-            backgroundColor: ['rgba(52, 152, 219, 0.7)','rgba(156, 89, 15, 0.7)','rgba(39, 174, 96, 0.7)'],
-            borderColor: ['rgba(52, 152, 219, 0.7)'.replace(/[^,]+(?=\))/, '1'),'rgba(156, 89, 15, 0.7)'.replace(/[^,]+(?=\))/, '1'),'rgba(39, 174, 96, 0.7)'.replace(/[^,]+(?=\))/, '1')],
+            backgroundColor: ['rgba(156, 89, 15, 0.7)','rgba(39, 174, 96, 0.7)','rgba(52, 152, 219, 0.7)'],
+            borderColor: ['rgba(156, 89, 15, 0.7)'.replace(/[^,]+(?=\))/, '1'),'rgba(39, 174, 96, 0.7)'.replace(/[^,]+(?=\))/, '1'),'rgba(52, 152, 219, 0.7)'.replace(/[^,]+(?=\))/, '1')],
             borderWidth: 1
         }]
     };
