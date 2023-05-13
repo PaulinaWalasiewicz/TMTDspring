@@ -27,10 +27,10 @@ public class AnalysisController {
     private TaskController taskController;
 
     // Get the current date
-//        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
     //for testing purposes
-    LocalDate currentDate = LocalDate.parse("2023-04-05");
+//    LocalDate currentDate = LocalDate.parse("2023-04-05");
 
     // Get the first day of the current month
     LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);

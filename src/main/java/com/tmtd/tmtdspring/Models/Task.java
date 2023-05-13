@@ -19,11 +19,9 @@ public class Task {
     @Column(name="title")
     private String title;
 
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    @JoinColumn(name = "description_id")
-    private Description description;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name="due_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -38,22 +36,16 @@ public class Task {
     @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch=FetchType.LAZY,optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    @JoinColumn(name = "category_id")
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "category")
     private Category category;
 
     @Column(name = "priority", nullable = false)
     private String priority;
 
-    public Task(String title,
-                Description description,
-                LocalDateTime dueDate,
-                boolean completed,
-                User user,
-                Category category,
-                String priority) {
+
+    public Task(Long id, String title, String description, LocalDateTime dueDate, boolean completed, User user, Category category, String priority) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -85,11 +77,11 @@ public class Task {
         this.title = title;
     }
 
-    public Description getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -139,10 +131,10 @@ public class Task {
                 "id=" + id +
                 ", user=" + user.getId() +
                 ", title='" + title  +
-                ", description=" + description.getId() +
+                ", description=" + description +
                 ", dueDate=" + dueDate +
                 ", completed=" + completed +
-                ", category=" + category.getId() +
+                ", category=" + category +
                 ", priority=" + priority +
                 '}';
 
