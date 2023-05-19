@@ -87,12 +87,12 @@ public class DrinkController {
     }
 
     @PostMapping("/users/{user_id}/drinks")
-    public ResponseEntity<Drink> createDrink(@PathVariable("user_id") long user_id, @RequestParam(required = true) String drink_type, @RequestParam(required = true) String drink_unit, @RequestBody Drink drinkRequest){
+    public ResponseEntity<Drink> createDrink(@PathVariable("user_id") long user_id, @RequestParam(required = true) String drink_type, @RequestParam(required = true) String unit, @RequestBody Drink drinkRequest){
 
         Optional<Drink> drink = userRepository.findById(user_id).map(user-> {
             drinkRequest.setUser(user);
             drinkRequest.setDrink_type(DrinkType.valueOf(drink_type));
-            drinkRequest.setUnit(LiquidUnit.valueOf(drink_unit));
+            drinkRequest.setUnit(LiquidUnit.valueOf(unit));
             return drinkRepository.save(drinkRequest);
         });
 

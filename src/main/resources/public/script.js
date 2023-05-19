@@ -108,7 +108,7 @@ function fetchDescription() {
 }
 
 function fetchDrinks(type_id, unit_id, date, limit) {
-    fetch('http://localhost:8080/api/users/404/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
+    fetch('http://localhost:8080/api/users/404/drink?drink_type='+type_id+'&unit='+unit_id)
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
@@ -125,7 +125,17 @@ function fetchDrinks(type_id, unit_id, date, limit) {
             for (const val of allDrinks) {
                 //let newValue = 0;
                 if (val.type == drinkType.type && val.unit == drinkUnit.unit) {
+                    debugger;
                     val.count = newValue
+                    if(val.count>=val.limit){
+                        if(val.type=="Water"){
+                            var msg= "Congratulation you drank enought water!"
+                        }else {
+                            var msg= "Your "+val.type+" reached it's limit. Don't drink it anymore today!"
+                        }
+                        // callNotif(msg)
+
+                    }
                     //val.limit = limit
                 }
             }
@@ -167,7 +177,7 @@ function fetchAllDrinks() {
 
 
 function fetchDrinkTypes() {
-    drinkTypes = [{content:"Water",id:1},{content:"Coffee",id:2},{content:"EnergyDrink",id:3}];
+    drinkTypes = [{content:"Water",id:"Water"},{content:"Coffee",id:"Coffee"},{content:"EnergyDrink",id:"EnergyDrink"}];
             // console.log(data)
             fetchDrinkUnits()
 
@@ -175,18 +185,18 @@ function fetchDrinkTypes() {
 
 function fetchDrinkTypesAndOpenModal() {
     // debugger;
-            drinkTypes = [{content:"Water",id:1},{content:"Coffee",id:2},{content:"EnergyDrink",id:3}];
+            drinkTypes = [{content:"Water",id:"Water"},{content:"Coffee",id:"Coffee"},{content:"EnergyDrink",id:"EnergyDrink"}];
             // console.log(data)
             fetchDrinkUnitsAndOpenModal();
 }
 
 function fetchDrinkUnitsAndOpenModal() {
-            drinkUnits = [{content:"LITER",id:1},{content:"MILLILITER",id:2},{content:"GALLON",id:3},{content:"OUNCE",id:4},{content:"PINT",id:5}];
+            drinkUnits = [{content:"LITER",id:"LITER"},{content:"MILLILITER",id:"MILLILITER"},{content:"GALLON",id:"GALLON"},{content:"OUNCE",id:"OUNCE"},{content:"PINT",id:"PINT"}];
             openAddDrinkModal();
 }
 
 function fetchDrinkUnits() {
-    drinkUnits = [{content:"LITER",id:1},{content:"MILLILITER",id:2},{content:"GALLON",id:3},{content:"OUNCE",id:4},{content:"PINT",id:5}];
+    drinkUnits = [{content:"LITER",id:"LITER"},{content:"MILLILITER",id:"MILLILITER"},{content:"GALLON",id:"GALLON"},{content:"OUNCE",id:"OUNCE"},{content:"PINT",id:"PINT"}];
             // console.log(data)
             fetchAllDrinks()
 }
@@ -470,19 +480,15 @@ function saveDrink() {
             },
             "count": drinkCountInput.value,
             "limit": drinkLimitInput.value,
-            "type": {
-                "type": "fdsa"
-            },
-            "unit": {
-                "unit": "gfdsa"
-            },
+            "drink_type": drinkTypeInput.value,
+            "unit": drinkUnitInput.value,
             "drink_date": today.toString()
         };
 
         // console.log(eventDescription.value);
         // console.log(today)
 
-        fetch('http://localhost:8080/api/users/404/drinks?drink_type=' + drinkTypeInput.label + '&drink_unit' + drinkUnitInput.label, {
+        fetch('http://localhost:8080/api/users/404/drinks?drink_type=' + drinkTypeInput.value + '&unit=' + drinkUnitInput.value, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -597,6 +603,8 @@ function initButtons() {
     document.getElementById('saveDrinkButton').addEventListener('click', saveDrink);
 
 }
+
+
 
 initButtons();
 fetchEvents();
