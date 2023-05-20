@@ -49,37 +49,37 @@ let allDrinks = [
     },
     {
         type: 'Water',
-        unit: 'l',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
         type: 'Coffee',
-        unit: 'l',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
         type: 'EnergyDrink',
-        unit: 'l',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
         type: 'Water',
-        unit: 'oz',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     },
     {
         type: 'Coffee',
-        unit: 'oz',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     },
     {
         type: 'EnergyDrink',
-        unit: 'oz',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     }];
@@ -108,7 +108,8 @@ function fetchDescription() {
 }
 
 function fetchDrinks(type_id, unit_id, date, limit) {
-    fetch('http://localhost:8080/api/users/404/drink?drink_type='+type_id+'&unit='+unit_id)
+    debugger;
+    fetch('http://localhost:8080/api/users/404/drinks?drink_type='+type_id+'&unit='+unit_id)
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
@@ -124,7 +125,7 @@ function fetchDrinks(type_id, unit_id, date, limit) {
 
             for (const val of allDrinks) {
                 //let newValue = 0;
-                if (val.type == drinkType.type && val.unit == drinkUnit.unit) {
+                if (val.type == drinkType.content && val.unit == drinkUnit.content) {
                     debugger;
                     val.count = newValue
                     if(val.count>=val.limit){
@@ -133,7 +134,7 @@ function fetchDrinks(type_id, unit_id, date, limit) {
                         }else {
                             var msg= "Your "+val.type+" reached it's limit. Don't drink it anymore today!"
                         }
-                        // callNotif(msg)
+                        callNotif(msg)
 
                     }
                     //val.limit = limit
@@ -466,7 +467,7 @@ function saveEvent() {
 }
 
 function saveDrink() {
-    debugger;
+    // debugger;
     if (drinkCountInput.value) {
         drinkCountInput.classList.remove('error');
 
