@@ -1,7 +1,7 @@
 let tasks = [];
 let users = [];
 let items = [];
-var idUser = '2';
+var idUser = '404';
 
 var pomodoro = {
     started : false,
