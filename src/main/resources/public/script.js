@@ -30,56 +30,56 @@ let drinks = [];
 let drinks2 = [];
 let allDrinks = [
     {
-        type: 'water',
-        unit: 'ml',
+        type: 'Water',
+        unit: 'MILLILITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'coffee',
-        unit: 'ml',
+        type: 'Coffee',
+        unit: 'MILLILITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'energy drink',
-        unit: 'ml',
+        type: 'EnergyDrink',
+        unit: 'MILLILITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'water',
-        unit: 'l',
+        type: 'Water',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'coffee',
-        unit: 'l',
+        type: 'Coffee',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'energy drink',
-        unit: 'l',
+        type: 'EnergyDrink',
+        unit: 'LITER',
         count: 0,
         limit: 0
     },
     {
-        type: 'water',
-        unit: 'oz',
+        type: 'Water',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     },
     {
-        type: 'coffee',
-        unit: 'oz',
+        type: 'Coffee',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     },
     {
-        type: 'energy drink',
-        unit: 'oz',
+        type: 'EnergyDrink',
+        unit: 'OUNCE',
         count: 0,
         limit: 0
     }];
@@ -96,25 +96,21 @@ function fetchEvents() {
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             events = data;
-            fetchDrinkTypes()
+            fetchAllDrinks()
         });
 
 }
 fetchEvents()
 
 function fetchDescription() {
-    fetch('http://localhost:8080/api/descriptions')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            items.length = 0;
-            items = data;
             openModal("5666")
-        });
 
 }
 
 function fetchDrinks(type_id, unit_id, date, limit) {
-    fetch('http://localhost:8080/api/users/2/drink?drink_type_id='+type_id+'&drink_unit_id='+unit_id)
+    debugger;
+    fetch('http://localhost:8080/api/users/404/drinks?drink_type='+type_id+'&unit='+unit_id)
+
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             drinks = data;
@@ -130,8 +126,18 @@ function fetchDrinks(type_id, unit_id, date, limit) {
 
             for (const val of allDrinks) {
                 //let newValue = 0;
-                if (val.type == drinkType.type && val.unit == drinkUnit.unit) {
+                if (val.type == drinkType.content && val.unit == drinkUnit.content) {
+                    debugger;
                     val.count = newValue
+                    if(val.count>=val.limit){
+                        if(val.type=="Water"){
+                            var msg= "Congratulation you drank enought water!"
+                        }else {
+                            var msg= "Your "+val.type+" reached it's limit. Don't drink it anymore today!"
+                        }
+                        callNotif(msg)
+
+                    }
                     //val.limit = limit
                 }
             }
@@ -147,36 +153,25 @@ function fetchAllDrinks() {
     fetch('http://localhost:8080/api/users/2/drinks')
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
+            // debugger;
             drinks2 = data;
             // console.log(data)
-            for (const type of drinkTypes) {
-                let newValue = 0;
-                for (const unit of drinkUnits) {
-                    let newValue = 0;
-                    let newLimit = 0;
-                    for (const val of drinks2) {
-
-                        if (val.drink_date == today) {
-                            console.log(val.unit.unit)
-                            if (val.drinkType.type == type.type && val.unit.unit == unit.unit) {
-                                console.log(val.count)
-                                newValue += val.count;
-                                newLimit = val.limit
-                                for (const val2 of allDrinks) {
-                                    if (val2.type == type.type && val2.unit == unit.unit) {
-                                        val2.count = newValue
-                                        val2.limit = newLimit
-                                        console.log(newValue)
-                                    }
-
-                                }
+                for (const val of drinks2) {
+                    if (val.drink_date == today) {
+                        console.log(val.unit.unit)
+                        console.log(val.count)
+                        for (const val2 of allDrinks) {
+                            if (val2.type == val.drink_type && val2.unit == val.unit) {
+                                val2.count = +val.count;
+                                val2.limit = val.limit
+                                console.log(val.drink_type)
                             }
+
                         }
+
                     }
-
-
                 }
-            }
+
             load()
         });
 
@@ -184,46 +179,28 @@ function fetchAllDrinks() {
 
 
 function fetchDrinkTypes() {
-    fetch('http://localhost:8080/api/drinktypes')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            drinkTypes = data;
+    drinkTypes = [{content:"Water",id:"Water"},{content:"Coffee",id:"Coffee"},{content:"EnergyDrink",id:"EnergyDrink"}];
             // console.log(data)
             fetchDrinkUnits()
-        });
 
 }
 
 function fetchDrinkTypesAndOpenModal() {
-    fetch('http://localhost:8080/api/drinktypes')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            drinkTypes = data;
+    // debugger;
+            drinkTypes = [{content:"Water",id:"Water"},{content:"Coffee",id:"Coffee"},{content:"EnergyDrink",id:"EnergyDrink"}];
             // console.log(data)
             fetchDrinkUnitsAndOpenModal();
-        });
-
 }
 
 function fetchDrinkUnitsAndOpenModal() {
-    fetch('http://localhost:8080/api/units')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            drinkUnits = data;
+            drinkUnits = [{content:"LITER",id:"LITER"},{content:"MILLILITER",id:"MILLILITER"},{content:"GALLON",id:"GALLON"},{content:"OUNCE",id:"OUNCE"},{content:"PINT",id:"PINT"}];
             openAddDrinkModal();
-        });
-
 }
 
 function fetchDrinkUnits() {
-    fetch('http://localhost:8080/api/units')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            drinkUnits = data;
+    drinkUnits = [{content:"LITER",id:"LITER"},{content:"MILLILITER",id:"MILLILITER"},{content:"GALLON",id:"GALLON"},{content:"OUNCE",id:"OUNCE"},{content:"PINT",id:"PINT"}];
             // console.log(data)
             fetchAllDrinks()
-        });
-
 }
 
 function fetchAnotherDescription(id) {
@@ -247,11 +224,11 @@ function openModal(date) {
         option.value = val.id;
         option.text = val.content.toString();
 
-        if (eventDescription.childElementCount >= 4) {
-            eventDescription.replaceChild(option, eventDescription.lastChild)
-        } else {
-            eventDescription.appendChild(option);
-        }
+        // if (eventDescription.childElementCount >= 4) {
+        //     eventDescription.replaceChild(option, eventDescription.lastChild)
+        // } else {
+        //     eventDescription.appendChild(option);
+        // }
     }
 
     clicked = date;
@@ -270,11 +247,12 @@ function openModal(date) {
 }
 
 function openAddDrinkModal() {
+    // debugger;
     //let drink = drinks.find(e => e.id === id);
     for (const val of drinkTypes) {
         let option = document.createElement("option");
         option.value = val.id;
-        option.text = val.type.toString();
+        option.text = val.content;
 
         if (drinkTypeInput.childElementCount >= 3) {
             drinkTypeInput.replaceChild(option, drinkTypeInput.lastChild)
@@ -286,7 +264,7 @@ function openAddDrinkModal() {
     for (const val of drinkUnits) {
         let option = document.createElement("option");
         option.value = val.id;
-        option.text = val.unit.toString();
+        option.text = val.content;
 
         if (drinkUnitInput.childElementCount >= 3) {
             drinkUnitInput.replaceChild(option, drinkUnitInput.lastChild)
@@ -395,9 +373,9 @@ function load(){
             if (daySquare.id === 'currentDay') {
                 const drinkDiv = document.createElement('button');
                 drinkDiv.classList.add('drink');
-                let water = allDrinks.filter(drink => drink.type == 'water' && drink.unit == 'ml');
-                let energy_drinks = allDrinks.filter(drink => drink.type == 'energy drink' && drink.unit == 'ml');
-                let coffee = allDrinks.filter(drink => drink.type == 'coffee' && drink.unit == 'ml');
+                let water = allDrinks.filter(drink => drink.type == 'Water' && drink.unit == 'MILLILITER');
+                let energy_drinks = allDrinks.filter(drink => drink.type == 'EnergyDrink' && drink.unit == 'MILLILITER');
+                let coffee = allDrinks.filter(drink => drink.type == 'Coffee' && drink.unit == 'MILLILITER');
                 // console.log(coffee[0].limit)
                 drinkDiv.innerText = "Drinks\nWater: " + water[0].count + water[0].unit + "/" + water[0].limit + water[0].unit + "\nCoffee: " + coffee[0].count + coffee[0].unit +  "/" + coffee[0].limit + coffee[0].unit + "\nEnergy Drinks: " + energy_drinks[0].count + energy_drinks[0].unit +  "/" + energy_drinks[0].limit + energy_drinks[0].unit;
 
@@ -467,7 +445,8 @@ function saveEvent() {
 
 
 
-        fetch('http://localhost:8080/api/users/2/events?description_id=' + eventDescription.value, {
+        fetch('http://localhost:8080/api/users/404/events/', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -490,6 +469,7 @@ function saveEvent() {
 }
 
 function saveDrink() {
+    // debugger;
     if (drinkCountInput.value) {
         drinkCountInput.classList.remove('error');
 
@@ -503,19 +483,16 @@ function saveDrink() {
             },
             "count": drinkCountInput.value,
             "limit": drinkLimitInput.value,
-            "type": {
-                "type": "fdsa"
-            },
-            "unit": {
-                "unit": "gfdsa"
-            },
+            "drink_type": drinkTypeInput.value,
+            "unit": drinkUnitInput.value,
             "drink_date": today.toString()
         };
 
         // console.log(eventDescription.value);
         // console.log(today)
 
-        fetch('http://localhost:8080/api/users/2/drinks?drink_type_id=' + drinkTypeInput.value + '&drink_unit_id=' + drinkUnitInput.value, {
+        fetch('http://localhost:8080/api/users/404/drinks?drink_type=' + drinkTypeInput.value + '&unit=' + drinkUnitInput.value, {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -630,6 +607,8 @@ function initButtons() {
     document.getElementById('saveDrinkButton').addEventListener('click', saveDrink);
 
 }
+
+
 
 initButtons();
 fetchEvents();

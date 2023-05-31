@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
+//    List<Task> findByUserId(Long user_id);
     List<Task> findByUserId(Long user_id);
-
     @Transactional
     void deleteByUserId(long user_id);
 }

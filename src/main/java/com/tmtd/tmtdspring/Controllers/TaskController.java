@@ -1,9 +1,8 @@
 package com.tmtd.tmtdspring.Controllers;
 
+import com.tmtd.tmtdspring.Models.Category;
 import com.tmtd.tmtdspring.Models.Task;
 import com.tmtd.tmtdspring.Repository.TaskRepository;
-import com.tmtd.tmtdspring.Repository.CategoryRepository;
-import com.tmtd.tmtdspring.Repository.DescriptionRepository;
 import com.tmtd.tmtdspring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,11 +25,6 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private DescriptionRepository descriptionRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity<Task> getTasksById(@PathVariable(value = "id") Long id) {
@@ -66,12 +60,12 @@ public class TaskController {
         return new ResponseEntity<>(filtered, HttpStatus.OK);
     }
     @PostMapping("/users/{user_id}/tasks")
-    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id, @RequestParam(required = false) long category_id, @RequestBody Task taskRequest) {
+    public ResponseEntity<Task> createTask(@PathVariable("user_id") long user_id, @RequestParam(required = false) String description, @RequestParam(required = false) String category, @RequestBody Task taskRequest) {
 
         Optional<Task> task = userRepository.findById(user_id).map(user-> {
             taskRequest.setUser(user);
-            taskRequest.setDescription(descriptionRepository.findById(description_id).get());
-            taskRequest.setCategory(categoryRepository.findById(category_id).get());
+            taskRequest.setDescription(description);
+            taskRequest.setCategory(Category.valueOf(category));
             return taskRepository.save(taskRequest);
         });
 

@@ -19,64 +19,38 @@ public class Drink {
     @ManyToOne(fetch=FetchType.EAGER,optional = false)
     @JoinColumn(name="user_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private User user;
 
     @Column(name = "count")
     private int count;
 
-    @Column(name = "limit")
+    @Column(name = "drink_limit")
     private float limit;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "drink_type")
-    private String drink_type;
+    private DrinkType drink_type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "unit")
-    private String unitt;
+    private LiquidUnit unit;
 
     @Column(name="drink_date" , nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate drink_date;
 
-    @ManyToOne(fetch=FetchType.EAGER,optional = false)
-    @JoinColumn(name="type",nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private DrinkType type;
-    @ManyToOne(fetch=FetchType.EAGER,optional = false)
-    @JoinColumn(name="liquid_unit",nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private LiquidUnit unit;
-
-    public Drink(User user, int count, float limit, DrinkType drinkType, LiquidUnit unit,LocalDate drink_date) {
+    public Drink(Long id, User user, int count, float limit, DrinkType drink_type, LiquidUnit unit, LocalDate drink_date) {
+        this.id = id;
         this.user = user;
         this.count = count;
         this.limit = limit;
-        this.type = drinkType;
+        this.drink_type = drink_type;
         this.unit = unit;
-        this.drink_type = drinkType.getType();
-        this.unitt = unit.getUnit();
         this.drink_date = drink_date;
     }
 
     public Drink() {
 
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public float getLimit() {
-        return limit;
-    }
-
-    public void setLimit(float limit) {
-        this.limit = limit;
     }
 
     public Long getId() {
@@ -95,12 +69,28 @@ public class Drink {
         this.user = user;
     }
 
-    public DrinkType getDrinkType() {
-        return type;
+    public int getCount() {
+        return count;
     }
 
-    public void setDrinkType(DrinkType type) {
-        this.type = type;
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public float getLimit() {
+        return limit;
+    }
+
+    public void setLimit(float limit) {
+        this.limit = limit;
+    }
+
+    public DrinkType getDrink_type() {
+        return drink_type;
+    }
+
+    public void setDrink_type(DrinkType drink_type) {
+        this.drink_type = drink_type;
     }
 
     public LiquidUnit getUnit() {
@@ -110,16 +100,22 @@ public class Drink {
     public void setUnit(LiquidUnit unit) {
         this.unit = unit;
     }
-    public void setDrink_date(LocalDate drink_date){this.drink_date=drink_date;}
-    public LocalDate getDrink_date(){return drink_date;}
-    @Override
+
+    public LocalDate getDrink_date() {
+        return drink_date;
+    }
+
+    public void setDrink_date(LocalDate drink_date) {
+        this.drink_date = drink_date;
+    }
+
     public String toString() {
         return "Drink{" +
                 "id=" + id +
                 ", user=" + user +
                 ", count=" + count +
                 ", limit=" + limit +
-                ", type=" + type +
+                ", type=" + drink_type +
                 ", unit=" + unit +
                 '}';
     }

@@ -120,11 +120,11 @@ function getTasks(idUser) {
 }
 
 function postTask(idUser, _title, _priority, _dueDate) {
+    debugger;
     const newTask = {
-        title: _title.toLowerCase(),
-        description: {
-            content: "descriptionContent"
-        },
+        title: _title,
+        description:  "descriptionContent",
+
         dueDate: _dueDate,
         completed: false,
         user: {
@@ -134,13 +134,11 @@ function postTask(idUser, _title, _priority, _dueDate) {
             firstName: "Adam",
             lastName: "Kowalski"
         },
-        category: {
-            content: "categoryContent"
-        },
-        priority: _priority.toLowerCase()
+        category: "TRAVEL",
+        priority: _priority
     };
-    console.log("postTask(): " + newTask.dueDate)
-    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description_id=3&category_id=2052`, {
+
+    fetch(`http://localhost:8080/api/users/${idUser}/tasks?user_id=${idUser}&description=text&category=TRAVEL`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -167,15 +165,12 @@ function postTask(idUser, _title, _priority, _dueDate) {
 
 }
 
-function putTask(taskId, _title, _completed, _priority, _dueDate) {
-    console.log("putTask(): " + _dueDate)
-
+function putTask(taskId, _title, _completed, _priority) {
+    debugger;
     const putTask = {
         title: _title,
-        description: {
-            content: "descriptionContent"
-        },
-        dueDate: _dueDate,
+        description:  "descriptionContent",
+        dueDate: '2016-03-04 11:08',
         completed: _completed,
         user: {
             username: "admin",
@@ -184,13 +179,12 @@ function putTask(taskId, _title, _completed, _priority, _dueDate) {
             firstName: "Adam",
             lastName: "Kowalski"
         },
-        category: {
-            content: "categoryContent"
-        },
+        category: "TRAVEL",
         priority: _priority
     };
 
-    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description_id=2&category_id=2052`, {
+    fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description=text&category=TRAVEL`, {
+
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -309,6 +303,7 @@ todoForm.addEventListener('submit', (e)=>{
     })
 
 todoList.addEventListener("click", (e) => {
+    debugger;
     if (e.target.classList.contains("remove-task")) {
         const taskId = e.target.closest('li').id;
         console.log("Removing task: "+ taskId)

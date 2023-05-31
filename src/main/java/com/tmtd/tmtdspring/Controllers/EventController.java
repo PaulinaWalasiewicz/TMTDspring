@@ -1,7 +1,6 @@
 package com.tmtd.tmtdspring.Controllers;
 
 import com.tmtd.tmtdspring.Models.Event;
-import com.tmtd.tmtdspring.Repository.DescriptionRepository;
 import com.tmtd.tmtdspring.Repository.EventRepository;
 import com.tmtd.tmtdspring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +21,6 @@ public class EventController {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private DescriptionRepository descriptionRepository;
 
     @GetMapping("/users/{user_id}/events")
     //@GetMapping("/users/events")
@@ -49,11 +43,11 @@ public class EventController {
 
     @PostMapping("/users/{user_id}/events")
     //@PostMapping("/users/events")
-    public ResponseEntity<Event> createEvent(@PathVariable("user_id") long user_id, @RequestParam(required = false) long description_id ,@RequestBody Event eventRequest) {
+    public ResponseEntity<Event> createEvent(@PathVariable("user_id") long user_id, @RequestParam(required = false) String description ,@RequestBody Event eventRequest) {
 
         Optional<Event> event = userRepository.findById(user_id).map(user-> {
             eventRequest.setUser(user);
-            eventRequest.setDescription(descriptionRepository.findById(description_id).get());
+            eventRequest.setDescription(description);
             return eventRepository.save(eventRequest);
         });
 

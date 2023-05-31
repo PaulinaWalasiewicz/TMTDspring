@@ -1,12 +1,9 @@
 package com.tmtd.tmtdspring.Controllers;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.tmtd.tmtdspring.Models.*;
 import com.tmtd.tmtdspring.Repository.DrinkRepository;
-import com.tmtd.tmtdspring.Repository.DrinkTypeRepository;
-import com.tmtd.tmtdspring.Repository.LiquidUnitRepository;
 import com.tmtd.tmtdspring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +18,7 @@ public class DrinkController {
     DrinkRepository drinkRepository;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    DrinkTypeRepository drinkTypeRepository;
-    @Autowired
-    LiquidUnitRepository liquidUnitRepository;
+
 
     @GetMapping("/drinks")
     public ResponseEntity<List<Drink>> getAllDrinks(){
@@ -69,18 +63,16 @@ public class DrinkController {
     }
 
     @GetMapping("/users/{user_id}/drink")
-    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id) {
+    public ResponseEntity<List<Drink>> getAllDrinksByUserId(@PathVariable(value = "user_id") long user_id, @RequestParam(required = true) String drink_type, @RequestParam(required = true) String drink_unit) {
 
         if (!userRepository.existsById(user_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         List<Drink> drinks = drinkRepository.findByUserId(user_id);
-        DrinkType drinkType = drinkTypeRepository.findById(drink_type_id).get();
-        LiquidUnit unit = liquidUnitRepository.findById(drink_unit_id).get();
 
-        List<Drink> drinks2 = drinks.stream().filter(drink -> drink.getDrinkType() == drinkType).toList();
-        List<Drink> drinks3 = drinks2.stream().filter(drink -> drink.getUnit() == unit).toList();
+        List<Drink> drinks2 = drinks.stream().filter(drink -> drink.getDrink_type().toString() == drink_type).toList();
+        List<Drink> drinks3 = drinks2.stream().filter(drink -> drink.getUnit().toString() == drink_unit).toList();
 
         return new ResponseEntity<>(drinks3, HttpStatus.OK);
     }
@@ -95,12 +87,12 @@ public class DrinkController {
     }
 
     @PostMapping("/users/{user_id}/drinks")
-    public ResponseEntity<Drink> createDrink(@PathVariable("user_id") long user_id, @RequestParam(required = true) long drink_type_id, @RequestParam(required = true) long drink_unit_id, @RequestBody Drink drinkRequest){
+    public ResponseEntity<Drink> createDrink(@PathVariable("user_id") long user_id, @RequestParam(required = true) String drink_type, @RequestParam(required = true) String unit, @RequestBody Drink drinkRequest){
 
         Optional<Drink> drink = userRepository.findById(user_id).map(user-> {
             drinkRequest.setUser(user);
-            drinkRequest.setDrinkType(drinkTypeRepository.findById(drink_type_id).get());
-            drinkRequest.setUnit(liquidUnitRepository.findById(drink_unit_id).get());
+            drinkRequest.setDrink_type(DrinkType.valueOf(drink_type));
+            drinkRequest.setUnit(LiquidUnit.valueOf(unit));
             return drinkRepository.save(drinkRequest);
         });
 
@@ -115,7 +107,7 @@ public class DrinkController {
         if (optionalDrink.isPresent()) {
             Drink drink1 = optionalDrink.get();
             drink1.setLimit(drink.getLimit());
-            drink1.setDrinkType(drink.getDrinkType());
+            drink1.setDrink_type(drink.getDrink_type());
             drink1.setUnit(drink.getUnit());
             drink1.setUser(drink.getUser());
             drink1.setCount(drink.getCount());
