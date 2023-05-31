@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width",initial-scale="1.0">
     <title>TMTD - Too Do</title>
     <link rel="stylesheet" href="todoStyle.css">
-    <link rel="stylesheet" href="./drink_counter/drinkcounter.css">
+<!--    <link rel="stylesheet" href="./drink_counter/drinkcounter.css">-->
 </head>
 <body>
     <div id="container">
@@ -57,7 +57,7 @@
                 <option value="High"></option>"
             </datalist>
             <input type="date" id="task-date">
-            <button type="submit">Add task</button>
+            <button id="add-task-btn" type="submit">+</button>
         </form>
 
         <ul class="stats" id="weekdays">
@@ -74,6 +74,13 @@
                 <span id="total-task">0</span>
             </li>
         </ul>
+        <ul>
+            <span>Sort by: </span>
+            <button class="sort-section" id="sort-by-duedate">due-date</button>
+            <button class="sort-section" id="sort-by-low">low </button>
+            <button class="sort-section" id="sort-by-medium">medium</button>
+            <button class="sort-section" id="sort-by-high">high</button>
+        </ul>
     </div>
 
     <selection>
@@ -82,8 +89,8 @@
     </selection>
 
     <script src="todoScript.js"></script>
-    <script src="./drink_counter/drinkcounter_jquery.js"></script>
-    <script src="./drink_counter/drinkcounter.js"></script>
+<!--    <script src="./drink_counter/drinkcounter_jquery.js"></script>-->
+<!--    <script src="./drink_counter/drinkcounter.js"></script>-->
 
 </body>
 </html>

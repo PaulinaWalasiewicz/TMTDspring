@@ -1,7 +1,7 @@
 let tasks = [];
 let users = [];
 let items = [];
-var idUser = '404';
+var idUser = '2';
 
 var pomodoro = {
     started : false,
@@ -87,6 +87,7 @@ var pomodoro = {
 };
 window.onload = function(){
     pomodoro.init();
+    getTasks(idUser);
 };
 
 function getTasks(idUser) {
@@ -104,7 +105,7 @@ function getTasks(idUser) {
             if(tasks && tasks.length > 0){
                 console.log("getTasks(): Loaded tasks to array");
                 tasks.map((task) => {
-                    console.log("Task: " + task.priority);
+                    console.log("Task: " + task.dueDate);
                     createTask(task);
                 })
                 countTasks();
@@ -117,13 +118,13 @@ function getTasks(idUser) {
             console.log("getTasks(): error " + tasks.length)
         });
 }
-getTasks(idUser);
 
 function postTask(idUser, _title, _priority, _dueDate) {
     debugger;
     const newTask = {
         title: _title,
         description:  "descriptionContent",
+
         dueDate: _dueDate,
         completed: false,
         user: {
@@ -153,7 +154,7 @@ function postTask(idUser, _title, _priority, _dueDate) {
         })
         .then(data => {
             countTasks();
-            console.log("postTask(): Success " + data.toString())
+            console.log("postTask(): Success " + data)
         })
         .catch(error => {
             console.log("postTask(): Problem")
@@ -181,9 +182,9 @@ function putTask(taskId, _title, _completed, _priority) {
         category: "TRAVEL",
         priority: _priority
     };
-    console.log("putTask(): ---Priority"+putTask.priority +" string " + JSON.stringify(putTask) )
 
     fetch(`http://localhost:8080/api/tasks/${taskId}?user_id=${idUser}&description=text&category=TRAVEL`, {
+
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -253,13 +254,17 @@ const titleInput = document.querySelector('#task-name');
 const priorityInput = document.querySelector('#task-priority');
 const dueDateInput = document.querySelector('#task-date');
 const deleteAllBtn = document.querySelector('#delete-todo');
-
+const sortDueDateBtn = document.querySelector("#sort-by-duedate");
+const sortLowBtn = document.querySelector("#sort-by-low");
+const sortMediumBtn = document.querySelector("#sort-by-medium");
+const sortHighBtn = document.querySelector("#sort-by-high");
+let isSorted = false;
 
 todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
 
-    const inputValue_title = titleInput.value;
-    const inputValue_priority = priorityInput.value;
+    const inputValue_title = titleInput.value.toLowerCase();
+    const inputValue_priority = priorityInput.value.toLowerCase();
     const inputValue_dueDate = dueDateInput.value + " 12:00";
 
 
@@ -285,8 +290,8 @@ todoForm.addEventListener('submit', (e)=>{
         },
         priority: inputValue_priority
     };
-    // console.log("---Priority"+ newTask.priority)
-    console.log("New task: " + newTask.title, newTask.completed, newTask.priority)
+
+    console.log("New task: " + newTask.title, newTask.dueDate)
     postTask(idUser, inputValue_title, inputValue_priority, inputValue_dueDate);
     // getTasks(idUser);
     createTask(newTask);
@@ -318,6 +323,75 @@ todoList.addEventListener("input", (e) => {
     updateTask(taskId, e.target)
 })
 
+sortDueDateBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks(idUser);
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortDueDateBtn");
+        tasks.sort(sortByDueDate);
+        tasks.forEach(function (task) {
+            console.log("[]: " + task.id);
+            createTask(task);
+        });
+        console.log("DueDate sort" + tasks);
+        isSorted = true;
+    }
+});
+
+sortLowBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks(idUser);
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortLowBtn");
+        tasks = sortTasksByPriority(tasks, "low");
+        tasks.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("Low sort" + tasks);
+        isSorted = true;
+    }
+});
+
+sortMediumBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks(idUser);
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortMediumBtn");
+        tasks = sortTasksByPriority(tasks, "medium");
+        tasks.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("Medium sort" + tasks);
+        isSorted = true;
+    }
+});
+
+sortHighBtn.addEventListener("click", (e) => {
+    if (isSorted) {
+        removeTasksHTML();
+        getTasks(idUser);
+        isSorted = false;
+    } else {
+        removeTasksHTML();
+        console.log("addEventListener: sortHighBtn");
+        tasks = sortTasksByPriority(tasks, "high");
+        tasks.forEach(function (task) {
+            createTask(task);
+        });
+        console.log("High sort" + tasks);
+        isSorted = true;
+    }
+});
+
 function createTask(task){
     const taskEl = document.createElement('li');
     taskEl.setAttribute('id', task.id)
@@ -342,7 +416,7 @@ function createTask(task){
     </div>`
 
     taskEl.innerHTML = taskElMarkup;
-
+    console.log("createTask(): " + task.dueDate);
     todoList.appendChild(taskEl)
 }
 
@@ -359,7 +433,9 @@ function countTasks(){
     completedTask.textContent = completedTasksArray.length
     remainingTask.textContent = tasks.length - completedTasksArray.length
 }
+
 function removeTask(taskId){
+    console.log("removeTask(): " + taskId)
     tasks = tasks.filter((task) =>
         task.id !== parseInt(taskId)
     )
@@ -367,6 +443,14 @@ function removeTask(taskId){
     console.log("removeTask(): Clicked to remove: "+ taskId);
     document.getElementById(taskId).remove();
     countTasks();
+}
+
+function removeTasksHTML() {
+    console.log("removeTasksHTML(): ");
+    tasks.forEach(function (task) {
+        console.log("removeTasksHTML(): " + task.id);
+        document.getElementById(task.id).remove();
+    });
 }
 
 function updateTask(taskId, el){
@@ -379,18 +463,45 @@ function updateTask(taskId, el){
         const parent = el.closest('li');
 
         task.completed = !task.completed;
-
         if(task.completed) {
             span.removeAttribute('contenteditable')
             parent.classList.add('complete')
+            span.style.textDecoration = 'line-through';
+            parent.style.color = '#333'
+            parent.style.opacity = '0.5'
+            parent.style.background = '#f2f2f2f2 0.5'
+
         } else {
             span.setAttribute('contenteditable', 'true')
             parent.classList.remove('complete')
+            span.style.textDecoration = 'none';
+            parent.style.color = 'black'
+            parent.style.opacity = '1'
+            parent.style.background = 'white'
         }
-        // console.log("updateTask(): dueDate: "+ task.dueDate);
-        // console.log("updateTask(): Priority: "+ task.priority);
-        // console.log("updateTask(): " + JSON.stringify(task));
-        putTask(taskId, task.title, task.completed, task.priority)
+        putTask(taskId, task.title, task.completed, task.priority, task.dueDate)
         countTasks();
     }
+}
+
+function sortByDueDate(taskA, taskB) {
+    const dueDateA = new Date(taskA.dueDate);
+    const dueDateB = new Date(taskB.dueDate);
+
+    if (dueDateA < dueDateB) {
+        return -1;
+    } else if (dueDateA > dueDateB) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+function sortTasksByPriority(tasks, priorityLevel) {
+    console.log("sortTasksByPriority(): tasks:" +  tasks, + "priority: " + priorityLevel)
+    tasks.sort((a, b) => a.priority - b.priority);
+    let filteredTasks = tasks
+    filteredTasks = filteredTasks.filter((task) => task.priority === priorityLevel);
+    console.log("sortTasksByPriority(): Done")
+    return filteredTasks;
 }

@@ -52,7 +52,6 @@ body {
 
 #weekdays {
     padding: 5px;
-    width: 100%;
     display: flex;
     color: #206E8C;
 }
@@ -71,17 +70,15 @@ body {
 }
 
 #todo-form {
-    margin-top: 20px;
     display: flex;
-    margin-top: 40px;
-    padding-top: 5px;
-    text-align: center;
+    text-align: center !important;
 }
 
-#task-name {
+.form-task input{
+    margin-right: 5px;
+    align-self: center;
     padding: 10px;
-    flex-grow: 1;
-    margin-right: 10px;
+    font-size: larger;
 }
 
 #todo-form #task-name{
@@ -139,7 +136,6 @@ input .form-task {
 .todos li div {
     flex-grow: 1;
     margin-right: 10px;
-
 }
 
 /*.remove-task {*/
@@ -261,6 +257,48 @@ input .form-task {
     background : rgb(106, 197, 167);
 }
 
-#buttons button#stop{
-    background : #d36c6c;
+#buttons button#stop {
+    background: #d36c6c;
+}
+
+#add-task-btn {
+    font-size: 60px;
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+    color: white !important;
+    background: rgb(106, 197, 167);
+    border-radius: 500rem;
+    border: 0px;
+}
+#add-task-btn:hover {
+    background: rgb(90, 167, 141);
+}
+#task-date {
+}
+
+.sort-section {
+    padding: 5px;
+    margin-top: 5px;
+    background: #b4b0b0;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.sort-section:hover {
+    background: #9e9b9b;
+}
+
+.sort-section:active,
+.sort-section:focus {
+    background-color: #8a8787;
+}
+
+.complete{
+    color: red;
 }
