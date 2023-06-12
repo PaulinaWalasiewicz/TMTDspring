@@ -33,7 +33,7 @@ flatpickr("input[type=datetime-local]", {enableTime: true,
     dateFormat: "Y-m-d H:i",});
 
 function fetchEvents() {
-    fetch('http://localhost:8080/api/users/2/events')
+    fetch('http://localhost:8080/api/users/1/events')
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
             events = data;
@@ -51,7 +51,7 @@ function fetchDescription() {
 }
 
 function fetchDrinks(type_id, unit_id) {
-    fetch('http://localhost:8080/api/users/404/drinks?drink_type='+type_id+'&unit='+unit_id)
+    fetch('http://localhost:8080/api/users/1/drinks?drink_type='+type_id+'&unit='+unit_id)
 
         .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
         .then(data => {
@@ -104,16 +104,6 @@ function fetchDrinkUnits() {
 
 }
 
-function fetchAnotherDescription(id) {
-    fetch('http://localhost:8080/api/descriptions')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => {
-            items.length = 0;
-            items = data;
-            openEditModal(id);
-        });
-
-}
 
 function prevDate(date) {
     let copy = new Date(date.valueOf());
@@ -146,7 +136,6 @@ function getweekDates(dt,nav){
         resultTab.push(d);
         wd2+=1;
     }
-    console.log(resultTab)
     return resultTab;
 }
 
@@ -252,7 +241,7 @@ function load(week){
                         document.getElementById('eventText').innerText = e.title;
                         document.getElementById('deleteButton').addEventListener('click', () => {deleteEvent(e.id)});
                         document.getElementById('editButton').addEventListener('click', () => {
-                            fetchAnotherDescription(e.id);
+                            openEditModal(e.id);
                         });
                         deleteEventModal.style.display = 'block';
                     })
@@ -390,15 +379,12 @@ function saveEvent() {
             },
             title: eventTitleInput.value,
             startTime: eventStartDate.value,
-            endTime: eventEndDate.value,
-            description: {
-                content: "dfghj"
-            }
+            endTime: eventEndDate.value
         };
 
         console.log(eventDescription.value);
 
-        fetch('http://localhost:8080/api/users/404/events', {
+        fetch('http://localhost:8080/api/users/1/events', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -441,7 +427,7 @@ function saveDrink() {
 
         console.log(eventDescription.value);
 
-        fetch('http://localhost:8080/api/users/404/drinks?drink_type=' + drinkTypeInput.value + '&unit=' + drinkUnitInput.value, {
+        fetch('http://localhost:8080/api/users/1/drinks?drink_type=' + drinkTypeInput.value + '&unit=' + drinkUnitInput.value, {
 
             method: 'POST',
             headers: {
@@ -477,9 +463,6 @@ function editEvent(id) {
         title: editEventTitleInput.value,
         startTime: editEventStartDate.value,
         endTime: editEventEndDate.value,
-        description: {
-            content: "dfghj"
-        }
     };
 
     console.log(eventDescription.value);
