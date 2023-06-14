@@ -19,6 +19,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ *Klasa UserController ma pole userRepository, które jest oznaczone adnotacją @Autowired i jest wstrzykiwane przez mechanizm Springa. Pole to odnosi się do repozytorium danych UserRepository, które umożliwia dostęp do operacji na encjach typu User.
+ *
+ * Następnie mamy kilka metod oznaczonych adnotacją @GetMapping, @PostMapping, @PutMapping lub @DeleteMapping, które obsługują różne żądania HTTP.
+ *
+ * Metoda getAllUsers() obsługuje żądanie GET pod ścieżką /api/users. Może również przyjmować opcjonalny parametr zapytania email. Metoda zwraca listę wszystkich użytkowników lub użytkowników o określonym adresie email, jeśli parametr email jest przekazany. Jeśli lista użytkowników jest pusta lub nie przekazano parametru email, zostanie zwrócony kod statusu NO_CONTENT. W przypadku wystąpienia błędu zostanie zwrócony kod statusu INTERNAL_SERVER_ERROR.
+ * Metoda createUser() obsługuje żądanie GET pod ścieżką /api/user/create/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator użytkownika. Metoda zwraca użytkownika o określonym identyfikatorze, jeśli istnieje. W przeciwnym razie zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda createUser() obsługuje żądanie POST pod ścieżką /api/user/create i tworzy nowego użytkownika na podstawie przekazanych danych w formacie JSON. Użytkownik jest zapisywany w repozytorium i zwracany wraz z kodem statusu CREATED. Jeśli wystąpi błąd, zostanie zwrócony kod statusu INTERNAL_SERVER_ERROR.
+ * Metoda updateUser() obsługuje żądanie PUT pod ścieżką /api/user/update/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator użytkownika. Metoda aktualizuje istniejącego użytkownika na podstawie przekazanych danych i zwraca zaktualizowanego użytkownika wraz z kodem statusu OK. Jeśli użytkownik nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda deleteUser() obsługuje żądanie DELETE pod ścieżką /api/user/delete/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator użytkownika. Metoda usuwa użytkownika o podanym identyfikatorze z repozytorium i zwraca kod statusu NO_CONTENT.
+ * Metoda deleteAllUsers() obsługuje żądanie DELETE pod ścieżką /api/users/delete. Metoda usuwa wszystkich użytkowników z repozytorium i zwraca kod statusu NO_CONTENT.
+ * Odpowiednie odpowiedzi HTTP są zwracane w zależności od wyniku operacji.
+ *
+ */
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")

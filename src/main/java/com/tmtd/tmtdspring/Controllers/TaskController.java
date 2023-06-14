@@ -14,6 +14,21 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ *Klasa TaskController odpowiada za zarządzanie zadaniami. Ma pole taskRepository i userRepository, które są oznaczone adnotacją @Autowired i są wstrzykiwane przez mechanizm Springa. Pola te odnoszą się odpowiednio do repozytorium danych TaskRepository i UserRepository, które umożliwiają dostęp do operacji na encjach typu Task i User.
+ *
+ * Następnie mamy kilka metod oznaczonych adnotacją @GetMapping, @PostMapping, @PutMapping lub @DeleteMapping, które obsługują różne żądania HTTP.
+ *
+ * Metoda getTasksById() obsługuje żądanie GET pod ścieżką /api/tasks/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator zadania. Metoda zwraca szczegółowe informacje o zadaniu o określonym identyfikatorze. Jeśli zadanie nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda getAllTasksByUserId() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/tasks, gdzie {user_id} to zmienna ścieżkowa reprezentująca identyfikator użytkownika. Metoda zwraca listę wszystkich zadań przypisanych do danego użytkownika. Jeśli użytkownik nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda getTasksFromTimeFrame() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/tasks/{date1}/{date2}, gdzie {user_id}, {date1} i {date2} to zmienne ścieżkowe reprezentujące odpowiednio identyfikator użytkownika oraz daty date1 i date2. Metoda zwraca listę zadań przypisanych do danego użytkownika, które mieszczą się w określonym przedziale czasowym. Jeśli użytkownik nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda createTask() obsługuje żądanie POST pod ścieżką /api/users/{user_id}/tasks i tworzy nowe zadanie na podstawie przekazanych danych. Zadanie jest przypisywane do danego użytkownika na podstawie identyfikatora user_id. Opcjonalnie można przekazać dodatkowe parametry: description (opis zadania) i category (kategoria zadania). Zadanie jest zapisywane w repozytorium i zwracane wraz z kodem statusu CREATED. Jeśli wystąpi błąd, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda updateTask() obsługuje żądanie PUT pod ścieżką /api/tasks/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator zadania. Metoda aktualizuje istniejące zadanie na podstawie przekazanych danych i zwraca zaktualizowane zadanie wraz z kodem statusu OK. Jeśli zadanie nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda deleteTask() obsługuje żądanie DELETE pod ścieżką /api/tasks/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator zadania. Metoda usuwa zadanie o podanym identyfikatorze z repozytorium i zwraca kod statusu NO_CONTENT.
+ * Metoda deleteAllTasks() obsługuje żądanie DELETE pod ścieżką /api/users/tasks i usuwa wszystkie zadania przypisane do użytkownika o podanym identyfikatorze user_id. Jeśli użytkownik nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda deleteAllTasksOfUser() obsługuje żądanie DELETE pod ścieżką /api/users/{user_id}/tasks i usuwa wszystkie zadania przypisane do użytkownika o podanym identyfikatorze user_id. Jeśli użytkownik nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Odpowiednie odpowiedzi HTTP są zwracane w zależności od wyniku operacji.
+ */
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")

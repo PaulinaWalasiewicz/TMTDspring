@@ -15,6 +15,17 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+/**
+ *
+ Klasa AnalysisController jest kontrolerem odpowiadającym za analizy danych użytkownika. Ma ona dwa pola oznaczone adnotacją @Autowired: drinkController i taskController. Te pola są wstrzykiwane przez mechanizm Springa i odnoszą się do innych kontrolerów, DrinkController i TaskController odpowiednio. Wstrzykiwanie zależności pozwala na łatwe korzystanie z funkcjonalności tych kontrolerów w obrębie AnalysisController.
+
+ Następnie znajduje się kilka zmiennych, które mają na celu uzyskanie danych dotyczących dat. Mamy currentDate, której wartość to bieżąca data uzyskana za pomocą LocalDate.now(). Następnie mamy firstDayOfMonth i lastDayOfMonth, które określają pierwszy i ostatni dzień bieżącego miesiąca na podstawie currentDate. Kolejne zmienne, firstDayOfWeek i lastDayOfWeek, określają pierwszy i ostatni dzień bieżącego tygodnia, przyjmując poniedziałek jako pierwszy dzień tygodnia. Te zmienne są wykorzystywane w endpointach do określania zakresów czasowych dla pobieranych danych.
+
+ Następnie mamy cztery metody oznaczone adnotacją @GetMapping i ścieżkami: /DrinkWeek, /DrinkMonth, /TaskWeek i /TaskMonth. Każda z tych metod zwraca obiekt ResponseEntity, który zawiera odpowiedź HTTP. Metody te wywołują metody z drinkController i taskController, aby pobrać odpowiednie dane dla określonych zakresów czasowych. Na przykład, metoda drinkWeek() wywołuje getUsersDrinksFromTime(id, firstDayOfWeek.minusDays(1), lastDayOfWeek.plusDays(1)) na obiekcie drinkController, aby pobrać listę napojów dla bieżącego tygodnia. Otrzymane dane są następnie umieszczone w obiekcie ResponseEntity i zwracane jako odpowiedź.
+
+ Wszystkie endpointy są dostępne pod ścieżką bazową /api/analysisData, po której następuje dodatkowy segment ścieżki dla każdej metody, np. /DrinkWeek, /DrinkMonth, itd.
+ */
+
 @CrossOrigin(origins = "http://localhost:8080")
 
 @RestController

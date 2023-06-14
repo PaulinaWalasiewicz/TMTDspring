@@ -19,6 +19,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.script.*;
+
+/**
+ *Klasa ScheduleEventCheck nie jest oznaczona adnotacją @Component, ale jest to klasa, która może być wykorzystywana jako komponent w kontenerze aplikacji Spring.
+ *
+ * Klasa ScheduleEventCheck wykonuje określone zadanie cyklicznie z wykorzystaniem mechanizmu harmonogramowania dostępnego w Spring Framework. Zawiera pola EventController i MyDataHolder, które są wstrzykiwane przez Spring za pomocą adnotacji @Autowired.
+ *
+ * Metoda reportCurrentTime() jest oznaczona adnotacją @Scheduled i jest uruchamiana z określoną częstotliwością. Wewnątrz tej metody jest wykonywana logika, która pobiera listę wydarzeń za pomocą EventController i filtruje te wydarzenia, aby znaleźć te, które odnoszą się do bieżącej daty i czasu. Informacje o tych wydarzeniach są przechowywane w liście wiadomości messageList, a następnie ustawiane w MyDataHolder.
+ *
+ * Metoda SearchforCurrentDate() jest odpowiedzialna za filtrowanie wydarzeń na podstawie bieżącej daty i czasu. Wydarzenia, które mają miejsce w ciągu 60 minut od bieżącego czasu, są dodawane do listy wiadomości.
+ *
+ * Klasa ScheduleEventCheck może być zarejestrowana jako komponent w kontekście Spring i jej zadanie będzie wykonywane automatycznie zgodnie z harmonogramem.
+ */
 @Component
 
 public class ScheduleEventCheck  {

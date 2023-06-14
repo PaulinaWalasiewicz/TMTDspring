@@ -8,6 +8,23 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
+/**
+ *Klasa Task jest adnotowana jako @Entity, co oznacza, że reprezentuje encję w bazie danych. Jest mapowana do tabeli o nazwie "TASK" za pomocą adnotacji @Table(name="TASK").
+ *
+ * Posiada następujące pola:
+ *
+ * id: Pole identyfikatora encji, które jest oznaczone adnotacją @Id. Jest generowane automatycznie za pomocą strategii GenerationType.TABLE.
+ * title: Pole przechowujące tytuł zadania, oznaczone adnotacją @Column(name="title").
+ * description: Pole przechowujące opis zadania, oznaczone adnotacją @Column(name = "description").
+ * dueDate: Pole przechowujące datę i czas terminu wykonania zadania, oznaczone adnotacją @Column(name="due_date"). Jest to obiekt typu LocalDateTime, który reprezentuje datę i czas.
+ * completed: Pole logiczne wskazujące, czy zadanie zostało wykonane, oznaczone adnotacją @Column(name="completed").
+ * user: Pole reprezentujące użytkownika (User), do którego przypisane jest zadanie. Jest to pole klucza obcego oznaczone adnotacją @ManyToOne. W bazie danych jest mapowane jako pole user_id, które nie może być puste (nullable = false). Powiązanie jest typu leniwego (fetch=FetchType.LAZY), co oznacza, że dane użytkownika będą pobierane tylko wtedy, gdy będą potrzebne.
+ * category: Pole reprezentujące kategorię zadania (Category), oznaczone adnotacją @Enumerated(EnumType.STRING). Jest to pole klasy wyliczeniowej, które przechowuje kategorię zadania.
+ * priority: Pole przechowujące priorytet zadania, oznaczone adnotacją @Column(name = "priority", nullable = false).
+ * Klasa Task posiada konstruktory, które pozwalają na ustawienie wartości pól podczas tworzenia obiektów. Posiada również zestaw getterów i setterów umożliwiających dostęp do pól encji.
+ *
+ * Klasa Task jest używana do przechowywania informacji o zadaniach w systemie. Zawiera pola takie jak tytuł, opis, termin wykonania, status ukończenia, przypisany użytkownik, kategoria i priorytet.
+ */
 @Entity
 @Table(name="TASK")
 public class Task {

@@ -11,6 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *Klasa EventController implementuje różne funkcje związane z zarządzaniem wydarzeniami, takie jak pobieranie wydarzeń dla konkretnego użytkownika, tworzenie, aktualizowanie i usuwanie wydarzeń.
+ *
+ * Klasa ta ma dwa pola oznaczone adnotacją @Autowired: eventRepository i userRepository. Te pola są wstrzykiwane przez mechanizm Springa i odnoszą się do repozytoriów danych, EventRepository i UserRepository odpowiednio. Wstrzykiwanie zależności pozwala na łatwe korzystanie z funkcjonalności tych repozytoriów w obrębie EventController.
+ *
+ * Następnie mamy kilka metod oznaczonych adnotacją @GetMapping, @PostMapping, @PutMapping lub @DeleteMapping, które obsługują różne żądania HTTP.
+ *
+ * Metoda getAllEventsByUserId() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/events, gdzie {user_id} to zmienna ścieżkowa, i zwraca wszystkie wydarzenia przypisane do określonego identyfikatora użytkownika.
+ * Metoda getEventsById() obsługuje żądanie GET pod ścieżką /api/events/{id}, gdzie {id} to zmienna ścieżkowa, i zwraca szczegółowe informacje o wydarzeniu o określonym identyfikatorze.
+ * Metoda createEvent() obsługuje żądanie POST pod ścieżką /api/users/{user_id}/events i tworzy nowe wydarzenie przypisane do określonego użytkownika na podstawie przekazanych danych. Może również zawierać opcjonalny parametr zapytania description, który reprezentuje opis wydarzenia.
+ * Metoda updateEvent() obsługuje żądanie PUT pod ścieżką /api/events/{id}, gdzie {id} to zmienna ścieżkowa, i aktualizuje istniejące wydarzenie o określonym identyfikatorze na podstawie przekazanych danych.
+ * Metoda deleteEvent() obsługuje żądanie DELETE pod ścieżką /api/events/{id}, gdzie {id} to zmienna ścieżkowa, i usuwa wydarzenie o określonym identyfikatorze.
+ * Metoda deleteAllEventsOfUser() obsługuje żądanie DELETE pod ścieżką /api/users/{user_id}/events, gdzie {user_id} to zmienna ścieżkowa, i usuwa wszystkie wydarzenia przypisane do określonego identyfikatora użytkownika.
+ * Każda z tych metod zwraca obiekt ResponseEntity, który reprezentuje odpowiedź HTTP, wraz z odpowiednim kodem statusu i treścią odpowiedzi.
+ *
+ */
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
