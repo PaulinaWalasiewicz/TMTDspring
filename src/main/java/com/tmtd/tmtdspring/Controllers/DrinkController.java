@@ -10,6 +10,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ *Klasa DrinkController implementuje różne funkcje pozwalające na zarządzanie napojami, takie jak pobieranie wszystkich napojów, pobieranie napojów dla konkretnego użytkownika, tworzenie i aktualizowanie napojów, a także usuwanie pojedynczych napojów lub wszystkich napojów.
+ *
+ * Klasa ta ma dwa pola oznaczone adnotacją @Autowired: drinkRepository i userRepository. Te pola są wstrzykiwane przez mechanizm Springa i odnoszą się do repozytoriów danych, DrinkRepository i UserRepository odpowiednio. Wstrzykiwanie zależności pozwala na łatwe korzystanie z funkcjonalności tych repozytoriów w obrębie DrinkController.
+ *
+ * Następnie mamy wiele metod oznaczonych adnotacją @GetMapping, @PostMapping, @PutMapping lub @DeleteMapping, które obsługują różne żądania HTTP.
+ *
+ * Metoda getAllDrinks() obsługuje żądanie GET pod ścieżką /api/drinks i zwraca wszystkie napoje znajdujące się w repozytorium drinkRepository.
+ * Metoda getAllEventsByUserId() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/drinks, gdzie {user_id} to zmienna ścieżkowa, i zwraca wszystkie napoje przypisane do określonego identyfikatora użytkownika.
+ * Metoda getUsersDrinksFromTime() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/drinks/{date1}/{date2}, gdzie {user_id}, {date1} i {date2} to zmienne ścieżkowe, i zwraca napoje użytkownika dla określonego zakresu czasowego.
+ * Metoda getAllDrinksByUserId() obsługuje żądanie GET pod ścieżką /api/users/{user_id}/drink i akceptuje dwa parametry zapytania (drink_type i drink_unit). Zwraca napoje użytkownika o określonym identyfikatorze, które pasują do określonego typu napoju i jednostki.
+ * Metoda getDrink() obsługuje żądanie GET pod ścieżką /api/drink/{id}, gdzie {id} to zmienna ścieżkowa, i zwraca szczegółowe informacje o napoju o określonym identyfikatorze.
+ * Metoda createDrink() obsługuje żądanie POST pod ścieżką /api/users/{user_id}/drinks i tworzy nowy napój przypisany do określonego użytkownika na podstawie przekazanych danych.
+ * Metoda updateDrink() obsługuje żądanie PUT pod ścieżką /api/drink/update/{id}, gdzie {id} to zmienna ścieżkowa, i aktualizuje istniejący napój o określonym identyfikatorze na podstawie przekazanych danych.
+ * Metoda deleteDrink() obsługuje żądanie DELETE pod ścieżką /api/drink/delete/{id}, gdzie {id} to zmienna ścieżkowa, i usuwa napój o określonym identyfikatorze.
+ * Metoda deleteAllDrink() obsługuje żądanie DELETE pod ścieżką /api/drinks i usuwa wszystkie napoje z repozytorium drinkRepository.
+ *
+ * Każda z tych metod zwraca obiekt ResponseEntity, który reprezentuje odpowiedź HTTP, wraz z odpowiednim kodem statusu i treścią odpowiedzi.
+ */
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")

@@ -18,6 +18,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ *Klasa NotificationController ma pole notificationRepository, które jest oznaczone adnotacją @Autowired i jest wstrzykiwane przez mechanizm Springa. To pole odnosi się do repozytorium danych NotificationRepository, które umożliwia dostęp do operacji na encjach typu Notification.
+ *
+ * Następnie mamy kilka metod oznaczonych adnotacją @GetMapping, @PostMapping, @PutMapping lub @DeleteMapping, które obsługują różne żądania HTTP.
+ *
+ * Metoda getAllNotifications() obsługuje żądanie GET pod ścieżką /api/notification i zwraca listę wszystkich powiadomień. Jeśli lista jest pusta, zostanie zwrócony kod statusu NO_CONTENT. W przeciwnym razie zwrócone zostaną powiadomienia wraz z kodem statusu OK.
+ * Metoda getPNotification() obsługuje żądanie GET pod ścieżką /api/notification/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator powiadomienia. Metoda zwraca szczegółowe informacje o powiadomieniu o określonym identyfikatorze. Jeśli powiadomienie nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda createNotification() obsługuje żądanie POST pod ścieżką /api/notification/create i tworzy nowe powiadomienie na podstawie przekazanych danych. Powiadomienie jest zapisywane w repozytorium i zwracane wraz z kodem statusu CREATED. Jeśli wystąpi błąd, zostanie zwrócony kod statusu INTERNAL_SERVER_ERROR.
+ * Metoda updateNotification() obsługuje żądanie PUT pod ścieżką /api/notification/update/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator powiadomienia do zaktualizowania. Metoda aktualizuje istniejące powiadomienie o określonym identyfikatorze na podstawie przekazanych danych i zwraca zaktualizowane powiadomienie wraz z kodem statusu OK. Jeśli powiadomienie nie istnieje, zostanie zwrócony kod statusu NOT_FOUND.
+ * Metoda deleteNotification() obsługuje żądanie DELETE pod ścieżką /api/notification/delete/{id}, gdzie {id} to zmienna ścieżkowa reprezentująca identyfikator powiadomienia do usunięcia. Metoda usuwa powiadomienie o określonym identyfikatorze z repozytorium i zwraca kod statusu NO_CONTENT. Jeśli wystąpi błąd, zostanie zwrócony kod statusu INTERNAL_SERVER_ERROR.
+ * Metoda deleteAllNotifications() obsługuje żądanie DELETE pod ścieżką /api/notifications. Metoda usuwa wszystkie powiadomienia z repozytorium i zwraca kod statusu NO_CONTENT. Jeśli wystąpi błąd, zostanie zwrócony kod statusu INTERNAL_SERVER_ERROR.
+ * Te metody umożliwiają manipulację danymi powiadomień poprzez wykonywanie różnych operacji, takich jak pobieranie wszystkich powiadomień, tworzenie nowych powiadomień, aktualizowanie istniejących powiadomień i usuwanie powiadomień. Odpowiednie odpowiedzi HTTP są zwracane w zależności od wyniku operacji.
+ */
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")

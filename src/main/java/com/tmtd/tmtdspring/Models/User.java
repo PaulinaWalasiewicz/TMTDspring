@@ -3,6 +3,19 @@ package com.tmtd.tmtdspring.Models;
 
 import jakarta.persistence.*;
 
+/**
+ *Klasa User jest adnotowana jako @Entity i mapowana do tabeli o nazwie "USERR" za pomocą adnotacji @Table(name="USERR").
+ *
+ * Posiada następujące pola:
+ *
+ * id: Pole identyfikatora encji, które jest oznaczone adnotacją @Id. Jest generowane automatycznie za pomocą strategii GenerationType.TABLE.
+ * username: Pole przechowujące nazwę użytkownika, oznaczone adnotacją @Column(name="username", nullable = false).
+ * password: Pole przechowujące hasło użytkownika, oznaczone adnotacją @Column(name="password", nullable = false).
+ * email: Pole przechowujące adres e-mail użytkownika, oznaczone adnotacją @Column(name="email", nullable = false).
+ * firstName: Pole przechowujące imię użytkownika, oznaczone adnotacją @Column(name="first_name", nullable = false).
+ * lastName: Pole przechowujące nazwisko użytkownika, oznaczone adnotacją @Column(name="last_name", nullable = false).
+ * Klasa User posiada konstruktory, które pozwalają na ustawienie wartości pól podczas tworzenia obiektów. Posiada również zestaw getterów i setterów umożliwiających dostęp do pól encji.
+ */
 @Entity
 @Table(name="USERR")
 public class User {

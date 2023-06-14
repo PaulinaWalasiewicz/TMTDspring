@@ -7,6 +7,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
+/**
+ *Klasa Notification jest adnotowana jako @Entity, co oznacza, że reprezentuje encję w bazie danych. Jest mapowana do tabeli o nazwie "NOTIFICATION" za pomocą adnotacji @Table(name="NOTIFICATION").
+ *
+ * Posiada następujące pola:
+ *
+ * id: Pole identyfikatora encji, które jest oznaczone adnotacją @Id. Jest generowane automatycznie za pomocą strategii GenerationType.TABLE.
+ * event: Pole reprezentujące powiązane zdarzenie (Event), z którym powiązana jest notyfikacja. Jest to pole klucza obcego oznaczone adnotacją @ManyToOne. W bazie danych jest mapowane jako pole event_id, które nie może być puste (nullable = false). Powiązanie jest typu leniwego (fetch=FetchType.LAZY), co oznacza, że dane związane z zdarzeniem będą pobierane tylko wtedy, gdy będą potrzebne.
+ * title: Pole przechowujące tytuł notyfikacji, oznaczone adnotacją @Column(name="title").
+ * message: Pole przechowujące treść notyfikacji, oznaczone adnotacją @Column(name="message").
+ * timestamp: Pole przechowujące znacznik czasu notyfikacji, oznaczone adnotacją @Column(name="timestamp"). Jest to obiekt typu LocalDateTime, który reprezentuje datę i czas.
+ * Klasa Notification posiada konstruktory, które pozwalają na ustawienie wartości pól podczas tworzenia obiektów. Posiada również zestaw getterów i setterów umożliwiających dostęp do pól encji.
+ */
 @Entity
 @Table(name="NOTIFICATION")
 public class Notification {
